@@ -1,0 +1,23 @@
+Identifier	Term name	Definition
+GNA:00001	µL/min/10e-6cells	
+GNA:00002	µL/min/mg	
+GNA:00003	mL/min/kg	
+GNA:00004	ng/ 100 µl bacterial culture	
+GNA:00005	ng/ 5 ml bacterial culture	
+GNA:00006	nM.hr	
+GNA:00007	pmol/ 100 µl bacterial culture	
+GNA:00008	pmol/ 5 ml bacterial culture	
+GNA:00009	Accumulation	
+GNA:00010	Frequency of resistance	
+GNA:00011	Fractionation	
+GNA:00012	cytotoxicity assay on HepG2	
+GNA:00013	in-vitro transcription translation assay	
+GNA:00014	liquid chromatography (LC) / mass spectrometry (MS) Lipidomics	
+GNA:00015	liquid chromatography (LC) / mass spectrometry (MS) Peptidomics	
+GNA:00016	liquid chromatography (LC) / mass spectrometry (MS) Proteomics	
+GNA:00017	Permeabilization of inner membrane of bacteria	
+GNA:00018	Permeabilization of outer membrane of bacteria	
+GNA:00019	Nuclear magnetic resonance (NMR) spectroscopy Metabolomics	
+GNA:00020	Colony forming units in lung homogenates	
+GNA:00021	Colony forming units in left thigh homogenates	
+GNA:00022	Colony forming units in right thigh homogenates	

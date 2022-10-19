@@ -1,0 +1,67 @@
+EXPERIMENT_TYPE	Modified name	Definition	Curie	Name	Xrefs	synonyms	annotator	Comment
+Accumulation	Accumulation	intracellular compound accumulation	GNA:00009	Accumulation				
+Blood_Stability		ADME property: blood stability	BAO:0010098	whole blood stability assay				
+CaV1.2		ion channel profiling						
+CYP1A2_Inh		CYP1A2 inhibition	BAO:0010160	CYP1A2 inhibition assay				
+CYP2A19_Inh		CYP2A19 inhibition						
+CYP2C9_Inh		CYP2C9 inhibition	BAO:0010164	CYP2C9 inhibition assay				
+CYP2D6_Inh		CYP2D6 inhibition						
+CYP3A4_Inh		CYP3A4 inhibition	BAO:0010165	CYP3A4 inhibition assay				
+FoR	Frequency of resistance	Frequency of resistance	GNA:00010	Frequency of resistance				
+Fractionation	Fractionation	quantification of intracellular antibiotic concentrations	GNA:00011	Fractionation				
+Hemolysis	Hemolysis	The hemolysis test is used to evaluate the in vitro hemolytic potential of compounds.	EFO:0009473	Hemolysis				
+Hepatocytes		ADME property: human hepatocyte clearance	BAO:0010222	plated human hepatocytes assay				
+HepG2_cytotoxicity	Cytotoxicity_HepG2	cytotoxicity assay on HepG2	GNA:00012	Cytotoxicity assay on HepG2				
+hERG		ion channel profiling						
+IVTT	in-vitro transcription translation assay	vitro transcription/translation assay	GNA:00013	in-vitro transcription translation assay				
+LC-MS Lipidomics	LC-MS_Lipidomics	liquid chromatography (LC) / mass spectrometry (MS) Lipidomics	GNA:00014	Liquid chromatography (LC) / mass spectrometry (MS) Lipidomics				
+LC-MS Metabolomics		liquid chromatography (LC) / mass spectrometry (MS) Metabolomics						
+LC-MS Peptidomics	LC-MS_Peptidomics	liquid chromatography (LC) / mass spectrometry (MS) Peptidomics	GNA:00015	Liquid chromatography (LC) / mass spectrometry (MS) Peptidomics				
+LC-MS Proteomics	LC-MS_Proteomics	liquid chromatography (LC) / mass spectrometry (MS) Proteomics	GNA:00016	Liquid chromatography (LC) / mass spectrometry (MS) Proteomics				
+MBI_CYP3A4_midazolam								
+MBI_CYP3A4_testosterone								
+Membrane_permeabilisation_inner	Membrane permeabilisation_inner	Permeabilization of inner membrane of bacteria	GNA:00017	Permeabilization of inner membrane of bacteria				
+Membrane_permeabilisation_outer	Membrane permeabilisation_outer	Permeabilization of outer membrane of bacteria	GNA:00018	Permeabilization of outer membrane of bacteria				
+MIC	MIC	Minimal Inhibitory Concentration	ARO:3004370	Minimum inhibitory concentration (MIC)				
+Microsomes		ADME property: microsomal stability						
+Molecular_Properties								
+MTI_dose_fractionation								
+MTI_dose_response								
+MTI_repeated dose								
+MTI_single_dose								
+NaV1.5		ion channel profiling						
+NMR Metabolomics	NMR_Metabolomics	Nuclear magnetic resonance (NMR) spectroscopy Metabolomics	GNA:00019	Nuclear magnetic resonance (NMR) spectroscopy Metabolomics				
+PK		Pharmacokinetics						
+PK_infected		Pharmacokinetics						
+PK_uninfected		Pharmacokinetics						
+Plasma_Stability		Plasma stability assessment						
+PPB_fu		plasma protein binding						
+PPB_recovery_(%)		plasma protein binding						
+RTI_dose_fractionation		respiratory tract infection model						
+RTI_dose_response		respiratory tract infection model						
+RTI_repeated_dose		respiratory tract infection model						
+RTI_single_dose		respiratory tract infection model						
+SEPSIS_dose_response		sepsis model						
+SEPSIS_single_dose		sepsis model						
+TDI_CYP3A4 (midazolam)_0_min_Pre-incubation		time-dependent inhibition						
+TDI_CYP3A4 (midazolam)_30_minute Pre-incubation_Plus_NADPH		time-dependent inhibition						
+TDI_CYP3A4 (midazolam)_30_minute_Pre-incubation_Minus_NADPH		time-dependent inhibition						
+TDI_CYP3A4 (testosterone)_0_min_Pre-incubation		time-dependent inhibition						
+TDI_CYP3A4 (testosterone)_30_minute_Pre-incubation_Minus_NADPH		time-dependent inhibition						
+TDI_CYP3A4 (testosterone)_30_minute_Pre-incubation_Plus_NADPH		time-dependent inhibition						
+Thermodynamic_solubility		phys-chem compound property: thermodynamic solubility						
+TLM								
+TLM - 32-conditions device								
+TLM - 5-conditions device								
+TLM - Hexa-device								
+TLM - Single Condition								
+TLM - Time-concentration gradient generator 								
+Tolerability	Tolerability	A type of safety study that assesses the degree to which overt adverse effects can be tolerated by the subject.	NCIT:C98791	Tolerability Study				
+Translation_inhibition								
+UTI_dose_fractionation		urinary tract infection model						
+UTI_dose_response		urinary tract infection model						
+UTI_repeated_dose		urinary tract infection model						
+UTI_single_dose		urinary tract infection model						
+Lung CFU	CFU_Lung	lung homogenates of sacrificed mice, colony-forming units	GNA:00020	Colony forming units in lung homogenates				
+Thigh CFU (left)	CFU_thigh_left	thigh left homogenates of sacrificed mice, colony-forming units	GNA:00021	Colony forming units in left thigh homogenates				
+Thigh CFU (right)	CFU_thigh_right	thigh right homogenates of sacrificed mice, colony-forming units	GNA:00022	Colony forming units in right thigh homogenates				

@@ -1,0 +1,24 @@
+RESULT_UNIT	RESULT_UNIT_REFACTORED	Curie	Name	Xrefs	synonyms	annotator	
+ng.hr/mL	ng.hr/mL	NCIT:C85624	Hour Times Nanogram per Milliliter				
+µg	µg	UO:0000023	Microgram	NCIT:C48152, microgram, 258685003			
+min	min	UO:0000031	Minute	NCIT:C48154, SIO:000434			
+h	h	UO:0000032	Hour	NCIT:C25529, SIO:000433, SNOMED:258702006			
+µM	µM	UO:0000064	Micromolar				
+nM	nM	UO:0000065	Nanomolar				
+g/mol	g/mol	UO:0000088	Gram per Mole	NCIT:C73721			
+%	%	UO:0000187	Percent				
+L/kg	L/kg	UO:0000197	Liter per Kilogram	NCIT:C73725			
+CFU	CFU	UO:0000210	Colony forming unit	NCIT:C68742, VO:0000189, UO:1000210, SNOMED:258733008			
+mg/L	mg/L	UO:0000273	Milligram per liter				
+µg/ml	µg/ml	UO:0000274	Microgram per Milliliter	NCIT:C64572			
+ng/mL	ng/mL	UO:0000275	Nanogram per milliliter				
+mg/kg	mg/kg	UO:0000308	Milligram per kilogram	NCIT:C67401, EFO:0002902, milligramPerKilogram			
+No Unit	No Unit						Software specific so omitted
+µL/min/10e-6cells	µL/min/10e-6cells	GNA:00001	µL/min/10e-6cells				
+µL/min/mg	µL/min/mg	GNA:00002	µL/min/mg				
+mL/min/kg	mL/min/kg	GNA:00003	mL/min/kg				
+ng/ 100 µl bacterial culture	ng/ 100 µl bacterial culture	GNA:00004	ng/ 100 µl bacterial culture				
+ng/ 5 ml bacterial culture	ng/ 5 ml bacterial culture	GNA:00005	ng/ 5 ml bacterial culture				
+nM.hr	nM.hr	GNA:00006	nM.hr				
+pmol/ 100 µl bacterial culture	pmol/ 100 µl bacterial culture	GNA:00007	pmol/ 100 µl bacterial culture				
+pmol/ 5 ml bacterial culture	pmol/ 5 ml bacterial culture	GNA:00008	pmol/ 5 ml bacterial culture				

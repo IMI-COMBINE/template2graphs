@@ -1,0 +1,5 @@
+ROUTE_OF_ADMINISTRATION	Curie	Name	Xrefs	synonyms	annotator
+s.c.	OBI:0000954	subcutaneous injection	NCIT:C38299, VO:0000532	subcutaneous route	
+i.n.	OBI:0000983	intranasal mucosal administration	NCIT:C38284, VO:0000341	intranasal route	
+i.m.	OBI:0000934	intramuscular injection	NCIT:C28161, VO:0000340	intramuscular route	
+i.p.	OBI:0000281	intraperitoneal injection	NCIT:C38258, VO:0000344	intraperitoneal route	

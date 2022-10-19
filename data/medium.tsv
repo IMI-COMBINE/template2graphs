@@ -1,0 +1,33 @@
+MEDIUM	Medium	Medium_pH	Medium_additives	Curie	Name	Xrefs	synonyms	annotator
+7H9	7H9			NCIT:C127521	Middlebrook 7H9 Growth Medium			
+7H9-low pH	7H9			NCIT:C127521	Middlebrook 7H9 Growth Medium			
+7H9-low pH-OADC	7H9		OADC	NCIT:C127521	Middlebrook 7H9 Growth Medium			
+7H9-low pH-OADC-tyloxapol	7H9		OADC, Tylaxopol	NCIT:C127521	Middlebrook 7H9 Growth Medium			
+7H9-OADC	7H9			NCIT:C127521	Middlebrook 7H9 Growth Medium			
+7H9-OADC-tyloxapol	7H9			NCIT:C127521	Middlebrook 7H9 Growth Medium			
+LB	LB			MICRO:0000562	LB medium			
+LB + 100 µg/ml Kanamycin	LB		Kanamycin (100 µg/ml)	MICRO:0000562	LB medium			
+LB + 100 µg/ml Spectinomycin	LB		Spectinomycin (100 µg/ml)	MICRO:0000562	LB medium			
+LB + 100 µg/ml Streptomycin	LB		Streptomycin (100 µg/ml)	MICRO:0000562	LB medium			
+Lung Surfactant	Lung Surfactant			https://www.ebi.ac.uk/ols/ontologies/micro/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FUBERON_0008826				
+Membrane buffer	Membrane buffer							
+MHB	MHB			ARO:3004424	Mueller-Hinton Broth (MHB)			
+MHB Iron depleted Cation adjusted	MHB		Iron depleted, Cation adjusted	ARO:3004424	Mueller-Hinton Broth (MHB)			
+MHB with agarose	MHB		agarose	ARO:3004424	Mueller-Hinton Broth (MHB)			
+MHB2	MHB2			SIGMA:90922	Mueller Hinton Broth 2 (MHB2)			
+MHB2 pH 7.3 + 100 µg/ml Kanamycin	MHB2	7.3	Kanamycin (100 µg/ml)	SIGMA:90922	Mueller Hinton Broth 2 (MHB2)			
+MHB2 pH 7.3 + 100 µg/ml Spectinomycin	MHB2	7.3	Spectinomycin (100 µg/ml)	SIGMA:90922	Mueller Hinton Broth 2 (MHB2)			
+MHB2 pH 7.3 + 100 µg/ml Streptomycin	MHB2	7.3	Streptomycin (100 µg/ml)	SIGMA:90922	Mueller Hinton Broth 2 (MHB2)			
+MHB2 pH adjusted 5.0	MHB2	5		SIGMA:90922	Mueller Hinton Broth 2 (MHB2)			
+MHB2 pH adjusted 5.5	MHB2	5.5		SIGMA:90922	Mueller Hinton Broth 2 (MHB2)			
+MHB2 pH adjusted 6.0	MHB2	6		SIGMA:90922	Mueller Hinton Broth 2 (MHB2)			
+MHB2 pH adjusted 7.0	MHB2	7		SIGMA:90922	Mueller Hinton Broth 2 (MHB2)			
+MHB2 pH adjusted 8.0	MHB2	8		SIGMA:90922	Mueller Hinton Broth 2 (MHB2)			
+non-selective agar	Agar		non-selective	MICRO:0000480	Agar plate medium			
+RPMI pH 7.3 + 10 mg/L CaCl2 + 5 mg/L MgCl2	RPMI	7.3		NCIT:C178973	Roswell Park Memorial Institute 1640 Medium (RPMI)			
+selective agar	Agar		selective	MICRO:0000480	Agar plate medium			
+Serum 30%			Serum (30%)					
+Serum 50%			Serum (50%)					
+Serum 70%			Serum (70%)					
+Tyrode buffer	Tyrode buffer							
+#NA (not applicable)								
