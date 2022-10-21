@@ -29,9 +29,11 @@ def get_bacterial_mapper() -> dict:
     tmp_df.set_index(val_column, inplace=True)
 
     # Drop columns with no ontology mapping
-    tmp_df.dropna(subset=['Curie'], inplace=True)
+    # tmp_df.dropna(subset=['Curie'], inplace=True)
 
-    for bacteria_idx, values in tqdm(tmp_df.iterrows(), total=tmp_df.shape[0]):
+    for bacteria_idx, values in tqdm(
+        tmp_df.iterrows(), total=tmp_df.shape[0], desc='Ontology for bacteria'
+    ):
         bacteria_dict[bacteria_idx] = {
             'curie': values['Curie'],
             'name': bacteria_idx,
@@ -40,6 +42,7 @@ def get_bacterial_mapper() -> dict:
         }
 
     return bacteria_dict
+
 
 def get_biomaterials_mapper() -> dict:
     """Method to get biomaterials dictionary."""
@@ -58,13 +61,16 @@ def get_biomaterials_mapper() -> dict:
     tmp_df = tmp_df[COMMON_COLS]
     tmp_df.set_index(val_column, inplace=True)
 
-    for biomaterials_idx, values in tqdm(tmp_df.iterrows(), total=tmp_df.shape[0]):
+    for biomaterials_idx, values in tqdm(
+        tmp_df.iterrows(), total=tmp_df.shape[0], desc='Ontology for biomaterials'
+    ):
         biomaterials_dict[biomaterials_idx] = {
             'curie': values['Curie'],
             'name': biomaterials_idx
         }
 
     return biomaterials_dict
+
 
 def get_experimental_type_mapper() -> dict:
     """Method to get experimental type dictionary."""
@@ -89,16 +95,19 @@ def get_experimental_type_mapper() -> dict:
     # Drop columns with no ontology mapping
     tmp_df.dropna(subset=['Curie'], inplace=True)
 
-    for experimental_type_idx, values in tqdm(tmp_df.iterrows(), total=tmp_df.shape[0]):
+    for experimental_type_idx, values in tqdm(
+        tmp_df.iterrows(), total=tmp_df.shape[0], desc='Ontology for experimental types'
+    ):
         experimental_type_dict[experimental_type_idx] = {
             'curie': values['Curie'],
-            'experimental_type': experimental_type_idx,
-            'name': values['Name'],
+            'name': experimental_type_idx,
+            'experimental_type': values['Name'],
             'modified_name': values['Modified name'],
             'definition': values['Definition']
         }
 
     return experimental_type_dict
+
 
 def get_custom_mapper() -> dict:
     """Method to get custom (GNA-NOW) dictionary."""
@@ -108,7 +117,7 @@ def get_custom_mapper() -> dict:
     tmp_df = pd.read_csv(f'{DATA_DIR}/gna_ontology.tsv', sep='\t')
 
     COMMON_COLS = [
-        'Identifier',
+        'Term name',
     ]
 
     val_column = tmp_df.columns.to_list()[1]
@@ -120,13 +129,16 @@ def get_custom_mapper() -> dict:
     # Drop columns with no ontology mapping
     tmp_df.dropna(subset=['Identifier'], inplace=True)
 
-    for custom_idx, values in tqdm(tmp_df.iterrows(), total=tmp_df.shape[0]):
+    for custom_idx, values in tqdm(
+        tmp_df.iterrows(), total=tmp_df.shape[0], desc='Custom ontology'
+    ):
         custom_dict[custom_idx] = {
-            'curie': values['Identifier'],
-            'name': custom_idx
+            'curie': custom_idx,
+            'name': values['Term name']
         }
 
     return custom_dict
+
 
 def get_medium_mapper() -> dict:
     """Method to get medium dictionary."""
@@ -151,17 +163,20 @@ def get_medium_mapper() -> dict:
     # Drop columns with no ontology mapping
     tmp_df.dropna(subset=['Curie'], inplace=True)
 
-    for medium_idx, values in tqdm(tmp_df.iterrows(), total=tmp_df.shape[0]):
+    for medium_idx, values in tqdm(
+        tmp_df.iterrows(), total=tmp_df.shape[0], desc='Ontology for medium'
+    ):
         medium_dict[ medium_idx] = {
             'curie': values['Curie'],
             'name':  medium_idx,
-            'medium': values['Medium'],
+            'medium_acronym': values['Medium'],
             'medium_name': values['Name'],
             'medium_pH': values['Medium_pH'],
             'medium_additives': values['Medium_additives']
         }
 
     return medium_dict
+
 
 def get_result_unit_mapper() -> dict:
     """Method to get result unit dictionary."""
@@ -184,14 +199,17 @@ def get_result_unit_mapper() -> dict:
     # Drop columns with no ontology mapping
     tmp_df.dropna(subset=['Curie'], inplace=True)
 
-    for result_unit_idx, values in tqdm(tmp_df.iterrows(), total=tmp_df.shape[0]):
+    for result_unit_idx, values in tqdm(
+        tmp_df.iterrows(), total=tmp_df.shape[0], desc='Ontology for result units'
+    ):
         result_unit_dict[result_unit_idx] = {
             'curie': values['Curie'],
             'name': result_unit_idx,
-            'definition': values['Name']
+            'unit_full_name': values['Name']
         }
 
     return result_unit_dict
+
 
 def get_roa_mapper() -> dict:
     """Method to get roa dictionary."""
@@ -216,43 +234,64 @@ def get_roa_mapper() -> dict:
     # Drop columns with no ontology mapping
     tmp_df.dropna(subset=['Curie'], inplace=True)
 
-    for roa_idx, values in tqdm(tmp_df.iterrows(), total=tmp_df.shape[0]):
+    for roa_idx, values in tqdm(
+        tmp_df.iterrows(), total=tmp_df.shape[0], desc='Ontology for route of administration'
+    ):
         roa_dict[roa_idx] = {
             'curie': values['Curie'],
-            'rout': roa_idx,
-            'name': values['Name'],
-            'Xrefs': values['Xrefs'],
+            'name': roa_idx,
+            'roa_full_name': values['Name'],
+            'xrefs': values['Xrefs'],
             'synonyms': values['synonyms']
         }
 
     return roa_dict
 
+
 def get_ontology_mapper() -> dict:
     """Method to map terms from template to controlled ontologies."""
 
-    file_names = [
-        '',
-        'biomaterials',
-        'dummy_data',
-        'experimental_type'
-        'gna_ontology',
-        'medium',
-        'result_unit'
-        'roa',
-        'statistical_method'
-    ]
-
     ontology_dict = {}
 
-    return {}
+    bacteria_dict = get_bacterial_mapper()
+    ontology_dict['BACTERIAL_STRAIN_NAME'] = bacteria_dict
+
+    biomaterial = get_biomaterials_mapper()
+    ontology_dict['BIOMATERIAL'] = biomaterial
+
+    exp_type = get_experimental_type_mapper()
+    ontology_dict['EXPERIMENT_TYPE'] = exp_type
+
+    medium = get_medium_mapper()
+    ontology_dict['MEDIUM'] = medium
+
+    result_unit = get_result_unit_mapper()
+    ontology_dict['RESULT_UNIT'] = result_unit
+
+    # TODO: Ask Gesa about which column the data is for RoA?
+    # roa = get_roa_mapper()
+    # ontology_dict['RESULT_UNIT'] = result_unit
+
+    return ontology_dict
 
 
 def harmonize_data(df: pd.DataFrame):
 
     data_mapper = get_ontology_mapper()
-    pass
 
+    df.replace('#NA (not applicable)', '', inplace=True)
 
-if __name__ == '__main__':
-    get_roa_mapper()
+    ANNOTATION_COLS = [
+        'BIOMATERIAL',
+        'BACTERIAL_STRAIN_NAME',
+        'EXPERIMENT_TYPE',
+        'MEDIUM',
+        'RESULT_UNIT'
+    ]
 
+    for column in ANNOTATION_COLS:
+        df[f'{column}_annotation'] = df[column].map(
+            lambda x:  data_mapper[column][x] if x in data_mapper[column] else ''
+        )
+
+    return df
