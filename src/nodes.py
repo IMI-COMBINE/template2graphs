@@ -65,4 +65,80 @@ def add_nodes(
         )
         tx.create(node_dict["Partner"][site_idx])
 
+    # Compound
+    for compound_idx, compound_exp_idx in df[['CPD_ID', 'EXT_CPD_ID']].values:
+        compound_annotation = {}
+
+        if pd.notna(compound_exp_idx):
+            compound_annotation['compound experimental id'] = compound_exp_idx
+
+        node_dict["Compound"][compound_idx] = Node(
+            "Compound", **compound_annotation
+        )
+        tx.create(node_dict["Compound"][compound_idx])
+
+    # Batch
+    for batch_idx, batch_exp_idx in df[['BATCH_ID', 'EXT_BATCH_ID']].values:
+        batch_annotation = {}
+
+        if pd.notna(batch_exp_idx):
+            batch_annotation['batch experimental id'] = batch_exp_idx
+
+        node_dict["Batch"][batch_idx] = Node(
+            "Batch", **batch_annotation
+        )
+        tx.create(node_dict["Batch"][batch_idx])
+
+    # Experiment type
+    for experiment_type_name, experiment_type_annotation in df[
+        ['EXPERIMENT_TYPE', 'EXPERIMENT_TYPE_annotation']
+    ].values:
+
+        experiment_type_annotation['experiment type'] = experiment_type_name
+
+        node_dict["Experiment type"][experiment_type_annotation['name']] = Node(
+            "Experiment type", **experiment_type_annotation
+        )
+        tx.create(node_dict["Experiment type"][experiment_type_annotation['name']])
+    
+    # Experiment
+    for experiment_id, experiment_date, experiment_protocol, experiment_ctrl, experiment_medium in df[
+        ['EXPID', 'EXPERIMENT_DATE', 'PROTOCOL_NAME', 'CONTROL_GROUP', 'MEDIUM_annotation']
+    ].values:
+        experiment_annotation = {}
+
+        if pd.notna(experiment_date):
+            experiment_annotation['experiment date'] = experiment_date
+        if pd.notna(experiment_protocol):
+            experiment_annotation['experiment protocol'] = experiment_protocol
+        if pd.notna(experiment_ctrl):
+            experiment_annotation['experiment control group'] = experiment_ctrl
+        if pd.notna(experiment_medium):
+            experiment_annotation['experiment medium'] = experiment_medium
+
+        node_dict["Experiment"][experiment_id] = Node(
+            "Experiment", **experiment_annotation
+        )
+        tx.create(node_dict["Experiment"][experiment_id])
+   
+    # Result
+    for result_type, statistical_method, result_operator, result_value, result_status, result_unit_annotation in df[['RESULT_TYPE', 'STATISTICAL_METHOD', 'RESULT_OPERATOR', 'RESULT_VALUE', 'RESULT_STATUS','RESULT_UNIT_annotation']].values:
+        Result_annotation = {}
+
+        if pd.notna(statistical_method):
+            Result_annotation['statistical method'] = statistical_method
+        if pd.notna(result_operator):
+            Result_annotation['result operator'] = result_operator
+        if pd.notna(result_value):
+            Result_annotation['result value'] = result_value
+        if pd.notna(result_status):
+            Result_annotation['result status'] = result_status
+        if pd.notna(result_unit_annotation):
+            Result_annotation['result unit'] = result_unit_annotation
+
+        node_dict["Result"][result_type] = Node(
+            "Result", **Result_annotation
+        )
+        tx.create(node_dict["Result"][result_type])
+
     return node_dict
