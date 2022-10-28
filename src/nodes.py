@@ -33,6 +33,9 @@ def add_nodes(
         if not isinstance(specimen_annotation, dict):
             specimen_annotation = ast.literal_eval(specimen_annotation)
 
+        if specimen_annotation['name'] in node_dict['Specimen']:
+            continue
+
         specimen_annotation['species_type'] = species_name
 
         node_dict["Specimen"][specimen_annotation['name']] = Node(
@@ -55,6 +58,9 @@ def add_nodes(
         if len(bact_annotation) < 0:
             continue
 
+        if bact_annotation['name'] in node_dict['Bacteria']:
+            continue
+
         bact_annotation['strain site'] = strain_site
 
         node_dict["Bacteria"][bact_annotation['name']] = Node(
@@ -64,6 +70,9 @@ def add_nodes(
 
     # Partner
     for site_idx, site_provenance in df[['SITE', 'PROVENANCE']].values:
+        if site_idx in node_dict['Partner']:
+            continue
+
         site_annotation = {}
 
         if pd.notna(site_provenance):
@@ -79,6 +88,9 @@ def add_nodes(
 
     # Compound
     for compound_idx, compound_ext_idx in df[['CPD_ID', 'EXT_CPD_ID']].values:
+        if compound_idx in node_dict['Compound']:
+            continue
+
         compound_annotation = {}
 
         if pd.notna(compound_ext_idx):
@@ -93,6 +105,9 @@ def add_nodes(
 
     # Batch
     for batch_idx, batch_ext_idx in df[['BATCH_ID', 'EXT_BATCH_ID']].values:
+        if batch_idx in node_dict['Batch']:
+            continue
+
         batch_annotation = {}
 
         if pd.notna(batch_ext_idx):
@@ -113,15 +128,21 @@ def add_nodes(
         if not isinstance(experiment_type_annotation, dict):
             experiment_type_annotation = ast.literal_eval(experiment_type_annotation)
 
+        if experiment_type_annotation['name'] in node_dict['Experiment type']:
+            continue
+
         node_dict["Experiment type"][experiment_type_annotation['name']] = Node(
             "Experiment type", **experiment_type_annotation
         )
         tx.create(node_dict["Experiment type"][experiment_type_annotation['name']])
     
     # Experiment
-    for experiment_id, experiment_date, experiment_protocol, experiment_ctrl, experiment_medium in df[
-        ['EXPID', 'EXPERIMENT_DATE', 'PROTOCOL_NAME', 'CONTROL_GROUP', 'MEDIUM_annotation']
+    for study_id, experiment_id, experiment_date, experiment_protocol, replicate_num, experiment_ctrl, experiment_medium in df[
+        ['STUDYID', 'EXPID', 'EXPERIMENT_DATE', 'PROTOCOL_NAME', 'No of replicates', 'CONTROL_GROUP', 'MEDIUM_annotation']
     ].values:
+
+        if experiment_id in node_dict['Experiment']:
+            continue
 
         if pd.isna(experiment_medium):
             experiment_medium = {}
@@ -132,8 +153,12 @@ def add_nodes(
 
         if pd.notna(experiment_date):
             experiment_annotation['experiment date'] = experiment_date
+        if pd.notna(study_id):
+            experiment_annotation['study id'] = study_id
         if pd.notna(experiment_protocol):
             experiment_annotation['experiment protocol'] = experiment_protocol
+        if pd.notna(replicate_num):
+             experiment_annotation['no. of replicate'] = replicate_num
         if pd.notna(experiment_ctrl):
             experiment_annotation['experiment control group'] = experiment_ctrl
         if pd.notna(experiment_medium):
@@ -147,29 +172,11 @@ def add_nodes(
         tx.create(node_dict["Experiment"][experiment_id])
    
     # Result
-    for result_type, statistical_method, result_operator, result_value, result_status, result_unit_annotation in df[
-        ['RESULT_TYPE', 'STATISTICAL_METHOD', 'RESULT_OPERATOR', 'RESULT_VALUE', 'RESULT_STATUS','RESULT_UNIT_annotation']
-    ].values:
+    for result_type in df['RESULT_TYPE'].values:
+        if result_type in node_dict['Result']:
+            continue
 
-        if pd.isna(result_unit_annotation):
-            result_unit_annotation = {}
-        elif not isinstance(result_unit_annotation, dict):
-            result_unit_annotation = ast.literal_eval(result_unit_annotation.replace('nan', 'None'))
-
-        Result_annotation = {}
-
-        if pd.notna(statistical_method):
-            Result_annotation['statistical method'] = statistical_method
-        if pd.notna(result_operator):
-            Result_annotation['result operator'] = result_operator
-        if pd.notna(result_value):
-            Result_annotation['result value'] = result_value
-        if pd.notna(result_status):
-            Result_annotation['result status'] = result_status
-        if pd.notna(result_unit_annotation):
-            Result_annotation.update(result_unit_annotation)
-        if pd.notna(result_value) and pd.notna(result_operator) and pd.notna(result_unit_annotation['name']):
-            Result_annotation['result'] = result_operator + result_value + result_unit_annotation['name']
+        Result_annotation = {'type': result_type}
 
         node_dict["Result"][result_type] = Node(
             "Result", **Result_annotation

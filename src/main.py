@@ -67,17 +67,17 @@ def create_graph(data_df: pd.DataFrame):
     )
 
     # Creating edges
-    # add_relations(
-    #     df=data_df,
-    #     node_mapping_dict=node_map,
-    #     tx=tx
-    # )
+    add_relations(
+        df=data_df,
+        node_mapping_dict=node_map,
+        tx=tx
+    )
 
     graph.commit(tx)
 
-    # export_triples(graph)
+    export_triples(graph)
 
 
 if __name__ == '__main__':
-    edge_data = get_data()
+    edge_data = pd.read_csv(f'{DATA_DIR}/processed_template.tsv', sep='\t')
     create_graph(data_df=edge_data)
