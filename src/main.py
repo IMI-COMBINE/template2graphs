@@ -79,5 +79,9 @@ def create_graph(data_df: pd.DataFrame):
 
 
 if __name__ == '__main__':
-    edge_data = pd.read_csv(f'{DATA_DIR}/processed_template.tsv', sep='\t')
+    if os.path.exists(f'{DATA_DIR}/processed_template.tsv'):
+        edge_data = get_data()
+        edge_data.to_csv(f'{DATA_DIR}/processed_template.tsv', sep='\t', index=False)
+    else:
+        edge_data = pd.read_csv(f'{DATA_DIR}/processed_template.tsv', sep='\t')
     create_graph(data_df=edge_data)

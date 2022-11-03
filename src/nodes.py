@@ -51,7 +51,11 @@ def add_nodes(
         if pd.isna(bact_annotation):
             continue
         elif not isinstance(bact_annotation, dict):
-            bact_annotation = ast.literal_eval(bact_annotation.replace('nan', 'None'))
+            if bact_annotation == '':  # empty strings
+                continue
+            bact_annotation = ast.literal_eval(
+                bact_annotation.replace('nan', 'None')
+            )
         elif isinstance(bact_annotation, str): # Omit the rows with no metadata dictionary
             continue
 
@@ -124,7 +128,7 @@ def add_nodes(
     for experiment_type_name, experiment_type_annotation in df[
         ['EXPERIMENT_TYPE', 'EXPERIMENT_TYPE_annotation']
     ].values:
-
+        print(experiment_type_name)
         if not isinstance(experiment_type_annotation, dict):
             experiment_type_annotation = ast.literal_eval(experiment_type_annotation)
 
@@ -144,7 +148,7 @@ def add_nodes(
         if experiment_id in node_dict['Experiment']:
             continue
 
-        if pd.isna(experiment_medium):
+        if pd.isna(experiment_medium) or experiment_medium == '':
             experiment_medium = {}
         elif not isinstance(experiment_medium, dict):
             experiment_medium = ast.literal_eval(experiment_medium.replace('nan', 'None'))

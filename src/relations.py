@@ -53,7 +53,7 @@ def add_relations(
         ) = rows
 
         """Specimen -> Bacteria edge"""
-        if pd.notna(biomaterial) and pd.notna(strain_name):
+        if (pd.notna(biomaterial) and pd.notna(strain_name)) and (strain_name in node_mapping_dict["Bacteria"]):
             specimen_node = node_mapping_dict["Specimen"][biomaterial]
             bacteria_node = node_mapping_dict["Bacteria"][strain_name]
             rel = Relationship(specimen_node, "ASSOCIATED", bacteria_node)
@@ -74,7 +74,7 @@ def add_relations(
             tx.create(rel)
 
         """Bacteria -> Compounds edge"""
-        if pd.notna(strain_name) and pd.notna(cpd_id):
+        if (pd.notna(strain_name) and pd.notna(cpd_id)) and (strain_name in node_mapping_dict["Bacteria"]):
             compound_node = node_mapping_dict["Compound"][cpd_id]
             bacteria_node = node_mapping_dict["Bacteria"][strain_name]
             rel = Relationship(compound_node, "ASSOCIATED", bacteria_node)
@@ -109,6 +109,8 @@ def add_relations(
             if pd.isna(unit_dict):
                 unit_dict = {}
             elif not isinstance(unit_dict, dict):
+                if unit_dict == '':  # empty strings
+                    continue
                 unit_dict = ast.literal_eval(unit_dict.replace('nan', 'None'))
 
             annotation = {}
