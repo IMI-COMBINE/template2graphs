@@ -26,10 +26,10 @@ def add_relations(
         'PLANNED_RELATIVE_TIMEPOINT', 'RELATIVE_TIMEPOINT' # Only in vivo study
     ]
 
-    COLS[:] = (value for value in COLS if value in df.columns) # to change
+    COLS_df = [value for value in COLS if value in df.columns]
 
-    for rows in tqdm(df[COLS].values, desc="Populating graph with relations"):
-        if 'TDD' in COLS:
+    for rows in tqdm(df[COLS_df].values, desc="Populating graph with relations"):
+        if 'TDD' in COLS_df:
             (
                 exp_id, cpd_id, batch_id, site_id,
                 biomaterial, strain_name, exp_type,
