@@ -24,7 +24,8 @@ Membrane_permeabilisation_inner	Membrane permeabilisation_inner	Permeabilization
 Membrane_permeabilisation_outer	Membrane permeabilisation_outer	Permeabilization of outer membrane of bacteria	GNA:00018	Permeabilization of outer membrane of bacteria				
 MIC	MIC	Minimal Inhibitory Concentration	ARO:3004370	Minimum inhibitory concentration (MIC)				
 Microsomes		ADME property: microsomal stability						
-Molecular_Properties								
+Molecular_Properties
+TDD Dose    A quantity of an agent (such as substance or energy) administered, taken, or absorbed at one time.  NCIT:C25488 Dose
 MTI_dose_fractionation								
 MTI_dose_response								
 MTI_repeated dose								

@@ -7,23 +7,23 @@ import pandas as pd
 from datetime import datetime
 from py2neo import Graph
 
-from src.nodes import add_nodes
-from src.relations import add_relations
-from src.data_preprocessing import harmonize_data
+from nodes import add_nodes
+from relations import add_relations
+from data_preprocessing import harmonize_data
 
 pd.set_option('display.max_columns', None)
 
 DATA_DIR = '../data'
-
+DATA = 'invivo'
 
 def get_data() -> pd.DataFrame:
-    df = pd.read_csv(f'{DATA_DIR}/dummy_data.tsv', sep='\t', skiprows=4)
+    df = pd.read_csv(f'{DATA_DIR}/{DATA}_dummy_data.tsv', sep='\t', skiprows=4)
     df.drop([
         'Variable',
         '#NA (not applicable)',
         '#NA (not applicable).1',
         'StdDev'
-    ], inplace=True, axis=1)
+    ], inplace=True, axis=1, errors='ignore')
 
     df = harmonize_data(df)
 
@@ -50,8 +50,8 @@ def create_graph(data_df: pd.DataFrame):
 
     # TODO: FixMe
     graph_url = 'bolt://localhost:7687'
-    graph_admin_name = 'yojana_test'
-    graph_pass = 'fraunhofer22'
+    graph_admin_name = 'neo4j'
+    graph_pass = 'tooba65'
 
     graph = Graph(
         graph_url,
@@ -79,9 +79,11 @@ def create_graph(data_df: pd.DataFrame):
 
 
 if __name__ == '__main__':
-    if os.path.exists(f'{DATA_DIR}/processed_template.tsv'):
-        edge_data = get_data()
-        edge_data.to_csv(f'{DATA_DIR}/processed_template.tsv', sep='\t', index=False)
+    if os.path.isfile(f'{DATA_DIR}/processed_{DATA}_template.tsv'):
+        edge_data = pd.read_csv(f'{DATA_DIR}/processed_{DATA}_template.tsv', sep='\t')
     else:
-        edge_data = pd.read_csv(f'{DATA_DIR}/processed_template.tsv', sep='\t')
+        edge_data = get_data()
+        edge_data.to_csv(f'{DATA_DIR}/processed_{DATA}_template.tsv', sep='\t', index=False)
+
     create_graph(data_df=edge_data)
+

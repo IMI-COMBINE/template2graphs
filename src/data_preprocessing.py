@@ -290,8 +290,9 @@ def harmonize_data(df: pd.DataFrame):
     ]
 
     for column in ANNOTATION_COLS:
-        df[f'{column}_annotation'] = df[column].map(
-            lambda x:  data_mapper[column][x] if x in data_mapper[column] else ''
-        )
+        if column in df.columns:
+            df[f'{column}_annotation'] = df[column].map(
+                lambda x:  data_mapper[column][x] if x in data_mapper[column] else ''
+            )
 
     return df

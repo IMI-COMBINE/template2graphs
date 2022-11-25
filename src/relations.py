@@ -11,46 +11,40 @@ from py2neo.database import Transaction
 
 
 def add_relations(
-    df: pd.DataFrame,
-    node_mapping_dict: dict,
-    tx: Transaction
+        df: pd.DataFrame,
+        node_mapping_dict: dict,
+        tx: Transaction
 ) -> None:
     """Add relations based on template"""
 
     COLS = [
-        'EXPID',
-        'CPD_ID',
-        'BATCH_ID',
-        'SITE',
-        'BIOMATERIAL',
-        'BACTERIAL_STRAIN_NAME',
-        'EXPERIMENT_TYPE',
-        'RESULT_TYPE',
-        'STATISTICAL_METHOD',
-        'RESULT_OPERATOR',
-        'RESULT_VALUE',
-        'RESULT_STATUS',
-        'RESULT_UNIT_annotation',
-        'COMMENTS'
+        'EXPID', 'CPD_ID', 'BATCH_ID', 'SITE',
+        'BIOMATERIAL', 'BACTERIAL_STRAIN_NAME', 'EXPERIMENT_TYPE',
+        'RESULT_TYPE', 'STATISTICAL_METHOD', 'RESULT_OPERATOR',
+        'RESULT_VALUE', 'RESULT_STATUS', 'RESULT_UNIT_annotation', 'COMMENTS',
+        'TDD', 'GROUP_DESCRIPTION', 'ANIMAL', 'ANIMAL_ID', # Only in vivo study
+        'PLANNED_RELATIVE_TIMEPOINT', 'RELATIVE_TIMEPOINT' # Only in vivo study
     ]
 
+    COLS[:] = (value for value in COLS if value in df.columns) # to change
+
     for rows in tqdm(df[COLS].values, desc="Populating graph with relations"):
-        (
-            exp_id,
-            cpd_id,
-            batch_id,
-            site_id,
-            biomaterial,
-            strain_name,
-            exp_type,
-            result_type,
-            method,
-            operator,
-            value,
-            status,
-            unit_dict,
-            comments
-        ) = rows
+        if 'TDD' in COLS:
+            (
+                exp_id, cpd_id, batch_id, site_id,
+                biomaterial, strain_name, exp_type,
+                result_type, method, operator,
+                value, status, unit_dict, comments,
+                dose, animal_group_description, animal_number, animal_id,
+                planned_relative_timepoint, relative_timepoint
+            ) = rows
+        else:
+            (
+                exp_id, cpd_id, batch_id, site_id,
+                biomaterial, strain_name, exp_type,
+                result_type, method, operator,
+                value, status, unit_dict, comments
+            ) = rows
 
         """Specimen -> Bacteria edge"""
         if (pd.notna(biomaterial) and pd.notna(strain_name)) and (strain_name in node_mapping_dict["Bacteria"]):
@@ -114,7 +108,18 @@ def add_relations(
                 unit_dict = ast.literal_eval(unit_dict.replace('nan', 'None'))
 
             annotation = {}
-
+            if 'TDD' in df.columns and pd.notna(dose):
+                annotation['dose (mg/kg)'] = dose
+            if 'GROUP_DESCRIPTION' in df.columns and pd.notna(animal_group_description):
+                annotation['animal group description'] = animal_group_description
+            if 'ANIMAL' in df.columns and pd.notna(animal_number):
+                annotation['animal number'] = animal_number
+            if 'ANIMAL_ID' in df.columns and pd.notna(animal_id):
+                annotation['animal id'] = animal_id
+            if 'PLANNED_RELATIVE_TIMEPOINT' in df.columns and pd.notna(planned_relative_timepoint):
+                annotation['planned relative timepoint (in hour)'] = planned_relative_timepoint
+            if 'RELATIVE_TIMEPOINT' in df.columns and pd.notna(relative_timepoint):
+                annotation['relative timepoint (in hour)'] = relative_timepoint
             if pd.notna(method):
                 annotation['statistical method'] = method
             if pd.notna(operator):
@@ -134,4 +139,3 @@ def add_relations(
 
             rel = Relationship(exp_node, "ASSOCIATED", result_node, **annotation)
             tx.create(rel)
-
