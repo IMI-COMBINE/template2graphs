@@ -166,7 +166,7 @@ def get_medium_mapper() -> dict:
     for medium_idx, values in tqdm(
         tmp_df.iterrows(), total=tmp_df.shape[0], desc='Ontology for medium'
     ):
-        medium_dict[ medium_idx] = {
+        medium_dict[medium_idx] = {
             'curie': values['Curie'],
             'name':  medium_idx,
             'medium_acronym': values['Medium'],
@@ -248,16 +248,138 @@ def get_roa_mapper() -> dict:
     return roa_dict
 
 
+def get_sex_mapper() -> dict:
+    """Method to get sex dictionary."""
+
+    sex_dict = {}
+
+    tmp_df = pd.read_csv(f'{DATA_DIR}/sex.tsv', sep='\t')
+
+    COMMON_COLS = [
+        'Curie'
+    ]
+
+    val_column = tmp_df.columns.to_list()[0]
+    COMMON_COLS.insert(0, val_column)
+
+    tmp_df = tmp_df[COMMON_COLS]
+    tmp_df.set_index(val_column, inplace=True)
+
+    for sex_idx, values in tqdm(
+        tmp_df.iterrows(), total=tmp_df.shape[0], desc='Ontology for sex'
+    ):
+        sex_dict[sex_idx] = {
+            'curie': values['Curie'],
+            'name': sex_idx
+        }
+
+    return sex_dict
+
+
+def get_species_mapper() -> dict:
+    """Method to get species dictionary."""
+
+    species_dict = {}
+
+    tmp_df = pd.read_csv(f'{DATA_DIR}/species.tsv', sep='\t')
+
+    COMMON_COLS = [
+        'Curie',
+        'Name'
+    ]
+
+    val_column = tmp_df.columns.to_list()[0]
+    COMMON_COLS.insert(0, val_column)
+
+    tmp_df = tmp_df[COMMON_COLS]
+    tmp_df.set_index(val_column, inplace=True)
+
+    # Drop columns with no ontology mapping
+    tmp_df.dropna(subset=['Curie'], inplace=True)
+
+    for species_idx, values in tqdm(
+        tmp_df.iterrows(), total=tmp_df.shape[0], desc='Ontology for species'
+    ):
+        species_dict[species_idx] = {
+            'curie': values['Curie'],
+            'name': species_idx,
+            'species_name': values['Name']
+        }
+
+    return species_dict
+
+
+def get_study_type_mapper() -> dict:
+    """Method to get study type dictionary."""
+
+    study_type_dict = {}
+
+    tmp_df = pd.read_csv(f'{DATA_DIR}/study_type.tsv', sep='\t')
+
+    COMMON_COLS = [
+        'Curie'
+    ]
+
+    val_column = tmp_df.columns.to_list()[0]
+    COMMON_COLS.insert(0, val_column)
+
+    tmp_df = tmp_df[COMMON_COLS]
+    tmp_df.set_index(val_column, inplace=True)
+
+    for study_type_idx, values in tqdm(
+        tmp_df.iterrows(), total=tmp_df.shape[0], desc='Ontology for sex'
+    ):
+        study_type_dict[study_type_idx] = {
+            'curie': values['Curie'],
+            'name': study_type_idx
+        }
+
+    return study_type_dict
+
+
+def get_statistical_method_mapper() -> dict:
+    """Method to statistical method dictionary."""
+
+    statistical_method_dict = {}
+
+    tmp_df = pd.read_csv(f'{DATA_DIR}/statistical_method.tsv', sep='\t')
+
+    COMMON_COLS = [
+        'Curie',
+        'Name'
+    ]
+
+    val_column = tmp_df.columns.to_list()[0]
+    COMMON_COLS.insert(0, val_column)
+
+    tmp_df = tmp_df[COMMON_COLS]
+    tmp_df.set_index(val_column, inplace=True)
+
+    # Drop columns with no ontology mapping
+    tmp_df.dropna(subset=['Curie'], inplace=True)
+
+    for statistical_method_idx, values in tqdm(
+        tmp_df.iterrows(), total=tmp_df.shape[0], desc='Ontology for statistical method'
+    ):
+        statistical_method_dict[statistical_method_idx] = {
+            'curie': values['Curie'],
+            'name': statistical_method_idx,
+            'statistical_method': values['Name']
+        }
+
+    return statistical_method_dict
+
+
 def get_ontology_mapper() -> dict:
     """Method to map terms from template to controlled ontologies."""
 
     ontology_dict = {}
 
-    bacteria_dict = get_bacterial_mapper()
-    ontology_dict['BACTERIAL_STRAIN_NAME'] = bacteria_dict
-
     biomaterial = get_biomaterials_mapper()
     ontology_dict['BIOMATERIAL'] = biomaterial
+
+    bacteria_dict = get_bacterial_mapper()
+    ontology_dict['BACTERIAL_STRAIN_NAME'] = bacteria_dict
 
     exp_type = get_experimental_type_mapper()
     ontology_dict['EXPERIMENT_TYPE'] = exp_type
@@ -268,9 +390,26 @@ def get_ontology_mapper() -> dict:
     result_unit = get_result_unit_mapper()
     ontology_dict['RESULT_UNIT'] = result_unit
 
-    # TODO: Ask Gesa about which column the data is for RoA?
-    # roa = get_roa_mapper()
-    # ontology_dict['RESULT_UNIT'] = result_unit
+    roa = get_roa_mapper()
+    ontology_dict['ROUTE_OF_ADMINISTRATION'] = roa
+
+    ro_infection = get_roa_mapper()
+    ontology_dict['INFECTION_ROUTE'] = ro_infection
+
+    pretreatment_roa = get_roa_mapper()
+    ontology_dict['PRETREATMENT_ROUTE_OF_ADMINSTRATION'] = pretreatment_roa
+
+    sex = get_sex_mapper()
+    ontology_dict['ANIMAL_SEX'] = sex
+
+    species = get_species_mapper()
+    ontology_dict['SPECIES_NAME'] = species
+
+    statistical_method = get_statistical_method_mapper()
+    ontology_dict['STATISTICAL_METHOD'] = statistical_method
+
+    study_type = get_study_type_mapper()
+    ontology_dict['STUDY_TYPE'] = study_type
 
     return ontology_dict
 
@@ -286,7 +425,14 @@ def harmonize_data(df: pd.DataFrame):
         'BACTERIAL_STRAIN_NAME',
         'EXPERIMENT_TYPE',
         'MEDIUM',
-        'RESULT_UNIT'
+        'RESULT_UNIT',
+        'ROUTE_OF_ADMINISTRATION',
+        'INFECTION_ROUTE',
+        'PRETREATMENT_ROUTE_OF_ADMINSTRATION',
+        'ANIMAL_SEX',
+        'SPECIES_NAME',
+        'STATISTICAL_METHOD',
+        'STUDY_TYPE'
     ]
 
     for column in ANNOTATION_COLS:
