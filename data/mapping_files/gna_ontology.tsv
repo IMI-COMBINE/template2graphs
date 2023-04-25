@@ -22,4 +22,6 @@ GNA:00020	Colony forming units in lung homogenates
 GNA:00021	Colony forming units in left thigh homogenates	
 GNA:00022	Colony forming units in right thigh homogenates
 GNA:00023	Exposure response study
-GNA:00024	No Unit
+GNA:00025	Multiple dose study
+GNA:00026	Screening on early bacteriostatical effect
+GNA:00027	Tolerability

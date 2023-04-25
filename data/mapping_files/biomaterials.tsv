@@ -3,5 +3,4 @@ Animal	NCIT:C14182	Animal
 Bacteria	NCBITaxon:2	Bacteria				
 Cell	NCIT:C12508	Cell				
 Protein	NCIT:C17021	Protein				
-Tissue	NCIT:C12801	Tissue				
-#NA (not applicable)						omitted
+Tissue	NCIT:C12801	Tissue
