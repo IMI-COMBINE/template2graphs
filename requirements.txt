@@ -1,3 +1,5 @@
-pandas
-tqdm
-py2neo
+pandas~=1.5.1
+tqdm~=4.64.1
+py2neo~=2021.2.3
+openpyxl==3.1.0
+numpy~=1.23.4
