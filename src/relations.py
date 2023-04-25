@@ -5,19 +5,55 @@
 import pandas as pd
 import ast
 from tqdm import tqdm
-from py2neo import Relationship
+from py2neo import Relationship, Node
 from py2neo.database import Transaction
+pd.set_option('display.max_columns', None)
+
+
+def _create_relation(
+    tx: Transaction,
+    entity_a: Node,
+    entity_b: Node,
+    relation_type: str,
+    rel_props: dict = {}
+):
+    tx.create(
+        Relationship(entity_a, relation_type, entity_b, **rel_props)
+    )
 
 
 def add_relations(
-        invivo_df: pd.DataFrame,
-        invitro_df: pd.DataFrame,
-        node_mapping_dict: dict,
-        tx: Transaction
+    invivo_df: pd.DataFrame,
+    invitro_df: pd.DataFrame,
+    node_mapping_dict: dict,
+    tx: Transaction
 ) -> None:
-    """Add relations based on template"""
-    # Merge node dictionaries
-    # node_mapping_dict = {**invivo_node_mapping_dict, **invitro_node_mapping_dict}
+    """Populate the relations to the graph."""
+
+    """Animal species -> Animal group"""
+    for species, animal_group_description, species_name_annotation in invivo_df[
+        ['SPECIES_NAME', 'GROUP_DESCRIPTION', 'SPECIES_NAME_annotation']
+    ].values:
+
+        if animal_group_description not in node_mapping_dict["Animal group"]:
+            continue
+
+        if animal_group_description == 'NOT IN LIST (SEE COMMENT)':
+            continue
+
+        if species in node_mapping_dict["Animal species"]:
+            a = node_mapping_dict["Animal species"][species]
+        elif species_name_annotation in node_mapping_dict["Animal species"]:
+            a = node_mapping_dict["Animal species"][species_name_annotation]
+        else:
+            continue
+
+        _create_relation(
+            entity_a=a,
+            relation_type="ASSOCIATED",
+            entity_b=node_mapping_dict["Animal group"][animal_group_description],
+            tx=tx
+        )
 
     # in-vivo
     COLS_invivo_df = [
@@ -26,8 +62,7 @@ def add_relations(
         'RESULT_STATUS', 'RESULT_UNIT_annotation', 'COMMENTS', 'TDD', 'GROUP_DESCRIPTION', 'ANIMAL',
         'ANIMAL_ID', 'PLANNED_RELATIVE_TIMEPOINT', 'RELATIVE_TIMEPOINT', 'GROUP_DESCRIPTION', 'PRETREATMENT_BATCH_ID',
         'PRETREATMENT_CPD_ID', 'PRETREATMENT_DOSE', 'PRETREATMENT_DOSING_INFO', 'PRETREATMENT_ROUTE_OF_ADMINSTRATION',
-        # TODO: Typo(ADMINISTRATION) may need to be fixed in the original file and accordingly here,
-        'INFECTION_ROUTE_annotation', 'ROUTE_OF_ADMINISTRATION_annotation', 'SPECIES_NAME_annotation', 'SPECIES_NAME',
+        'INFECTION_ROUTE_annotation', 'ROUTE_OF_ADMINISTRATION_annotation',
         'DOSING_INFO', 'FREQUENCY', 'STUDYID', 'STUDY_TYPE', 'DOSE', 'EXT_BATCH_ID', 'EXT_CPD_ID'
     ]
 
@@ -38,238 +73,299 @@ def add_relations(
             status, unit_dict, comments, total_drug_dose, animal_group_description, animal_number,
             animal_id, planned_relative_timepoint, relative_timepoint, animal_group, pretreatment_batch_id,
             pretreatment_cpd_id, pretreatment_dose, pretreatment_dosing_info, pretreatment_route_of_administration,
-            infection_route_dict, RoA_dict, species_name_annotation, species,
-            dosing_info, frequency, study_id, study_type, treatment_dose, ext_batch_id, ext_cpd_id
+            infection_route_dict, roa_dict, dosing_info, frequency, study_id, study_type, treatment_dose,
+            ext_batch_id, ext_cpd_id
         ) = rows
-
-        # relations existing only in in-vivo
-        """Animal species -> Animal group edge"""
-        if pd.notna(species) and pd.notna(animal_group_description):
-            species_node = node_mapping_dict["Animal species"][species]
-            animal_group_node = node_mapping_dict["Animal group"][animal_group_description]
-            rel = Relationship(species_node, "ASSOCIATED", animal_group_node)
-            tx.create(rel)
-
-        """Animal group -> Animal number edge"""
-        if pd.notna(animal_group_description) and pd.notna(animal_number):
-            animal_group_node = node_mapping_dict["Animal group"][animal_group_description]
-            animal_number_node = node_mapping_dict["Animal number"][animal_number]
-            rel = Relationship(animal_group_node, "ASSOCIATED", animal_number_node)
-            tx.create(rel)
-
-        """Study type -> Study edge"""
-        if pd.notna(study_type) and pd.notna(study_id):
-            study_type_node = node_mapping_dict["In-vivo study type"][study_type]
-            study_node = node_mapping_dict["Study"][study_id]
-            rel = Relationship(study_type_node, "ASSOCIATED", study_node)
-            tx.create(rel)
 
         """Study -> Animal group edge"""
         if pd.notna(study_id) and pd.notna(animal_group_description):
-            study_node = node_mapping_dict["Study"][study_id]
-            animal_group_node = node_mapping_dict["Animal group"][animal_group_description]
-            rel = Relationship(study_node, "ASSOCIATED", animal_group_node)
-            tx.create(rel)
+            if animal_group_description != 'NOT IN LIST (SEE COMMENT)':
+                _create_relation(
+                    entity_a=node_mapping_dict["Study"][study_id],
+                    relation_type="ASSOCIATED",
+                    entity_b=node_mapping_dict["Animal group"][animal_group_description],
+                    tx=tx
+                )
 
-        """Partner -> Animal group edge"""
+        """Animal group -> Animal number"""
+        if animal_group_description != 'NOT IN LIST (SEE COMMENT)':
+            if (
+                animal_group_description in node_mapping_dict["Animal group"] and
+                animal_number in node_mapping_dict["Animal number"]
+            ):
+                _create_relation(
+                    entity_a=node_mapping_dict["Animal group"][animal_group_description],
+                    relation_type="ASSOCIATED",
+                    entity_b=node_mapping_dict["Animal number"][animal_number],
+                    tx=tx
+                )
+
+        """Study type -> Study edge"""
+        if pd.notna(study_type) and pd.notna(study_id):
+            _create_relation(
+                entity_a=node_mapping_dict["In-vivo study type"][study_type],
+                relation_type="ASSOCIATED",
+                entity_b=node_mapping_dict["Study"][study_id],
+                tx=tx
+            )
+
+        """Site/Partner -> Animal group edge"""
         if pd.notna(site_id) and pd.notna(animal_group_description):
-            partner_node = node_mapping_dict["Partner"][site_id]
-            animal_group_node = node_mapping_dict["Animal group"][animal_group_description]
-            rel = Relationship(partner_node, "ASSOCIATED", animal_group_node)
-            tx.create(rel)
+            if animal_group_description != 'NOT IN LIST (SEE COMMENT)':
+                _create_relation(
+                    entity_a=node_mapping_dict["Partner"][site_id],
+                    relation_type="ASSOCIATED",
+                    entity_b=node_mapping_dict["Animal group"][animal_group_description],
+                    tx=tx
+                )
 
         """Animal group -> Bacteria edge"""
-        if pd.notna(animal_group) and pd.notna(strain_name) and strain_name != '0' and strain_name != 0:
-            animal_group_node = node_mapping_dict["Animal group"][animal_group]
-            bacteria_node = node_mapping_dict["Bacteria"][strain_name]
+        if pd.notna(animal_group) and pd.notna(strain_name):
+            if animal_group in node_mapping_dict["Animal group"] and strain_name in node_mapping_dict["Bacteria"]:
+                annotation = {}
 
-            annotation = {}
-            if 'PRETREATMENT_BATCH_ID' in invivo_df.columns and pd.notna(pretreatment_batch_id):
-                annotation['pretreatment batch id'] = pretreatment_batch_id
-            if 'PRETREATMENT_CPD_ID' in invivo_df.columns and pd.notna(pretreatment_cpd_id):
-                annotation['pretreatment compound'] = pretreatment_cpd_id
-            if 'PRETREATMENT_DOSE' in invivo_df.columns and pd.notna(pretreatment_dose):
-                annotation['pretreatment dose (mg/kg)'] = pretreatment_dose
-            if 'PRETREATMENT_DOSING_INFO' in invivo_df.columns and pd.notna(pretreatment_dosing_info):
-                annotation['pretreatment dosing information'] = pretreatment_dosing_info
-            if 'PRETREATMENT_ROUTE_OF_ADMINSTRATION' in invivo_df.columns and \
-                    pd.notna(pretreatment_route_of_administration):
-                annotation['pretreatment route of administration'] = pretreatment_route_of_administration
+                if 'PRETREATMENT_BATCH_ID' in invivo_df.columns and pd.notna(pretreatment_batch_id):
+                    annotation['pretreatment batch id'] = pretreatment_batch_id
 
-            if pd.isna(infection_route_dict):
-                infection_route_dict = {}
-            elif not isinstance(infection_route_dict, dict):
-                if infection_route_dict == '':  # empty strings
-                    continue
-                infection_route_dict = ast.literal_eval(infection_route_dict.replace('nan', 'None'))
-            if pd.notna(infection_route_dict):
-                annotation.update(infection_route_dict)
+                if 'PRETREATMENT_CPD_ID' in invivo_df.columns and pd.notna(pretreatment_cpd_id):
+                    annotation['pretreatment compound'] = pretreatment_cpd_id
 
-            rel = Relationship(animal_group_node, "IS INFECTED", bacteria_node, **annotation)
-            tx.create(rel)
+                if 'PRETREATMENT_DOSE' in invivo_df.columns and pd.notna(pretreatment_dose):
+                    annotation['pretreatment dose (mg/kg)'] = pretreatment_dose
+
+                if 'PRETREATMENT_DOSING_INFO' in invivo_df.columns and pd.notna(pretreatment_dosing_info):
+                    annotation['pretreatment dosing information'] = pretreatment_dosing_info
+
+                if (
+                    'PRETREATMENT_ROUTE_OF_ADMINSTRATION' in invivo_df.columns and
+                    pd.notna(pretreatment_route_of_administration)
+                ):
+                    annotation['pretreatment route of administration'] = pretreatment_route_of_administration
+
+                if pd.isna(infection_route_dict):
+                    infection_route_dict = {}
+                elif not isinstance(infection_route_dict, dict):
+                    if infection_route_dict != '':  # empty strings
+                        infection_route_dict = ast.literal_eval(infection_route_dict.replace('nan', 'None'))
+
+                if pd.notna(infection_route_dict):
+                    annotation.update(infection_route_dict)
+
+                _create_relation(
+                    entity_a=node_mapping_dict["Animal group"][animal_group],
+                    relation_type="IS INFECTED",
+                    entity_b=node_mapping_dict["Bacteria"][strain_name],
+                    tx=tx,
+                    rel_props=annotation
+                )
 
         """Study type -> Experiment type edge"""
         if pd.notna(study_type) and pd.notna(exp_type):
-            study_type_node = node_mapping_dict["In-vivo study type"][study_type]
-            exp_type_node = node_mapping_dict["Experiment type"][exp_type]
-            rel = Relationship(study_type_node, "ASSOCIATED", exp_type_node)
-            tx.create(rel)
+            _create_relation(
+                entity_a=node_mapping_dict["In-vivo study type"][study_type],
+                relation_type="ASSOCIATED",
+                entity_b=node_mapping_dict["Experiment type"][exp_type],
+                tx=tx,
+            )
 
         """Animal group -> Compound edge"""
         if pd.notna(animal_group) and pd.notna(cpd_id):
-            animal_group_node = node_mapping_dict["Animal group"][animal_group]
-            compound_node = node_mapping_dict["Compound"][cpd_id]
+            if animal_group!= 'NOT IN LIST (SEE COMMENT)':
+                annotation = {}
 
-            annotation = {}
-            if 'CPD_ID' in invivo_df.columns and pd.notna(cpd_id):
-                annotation['compound'] = cpd_id
-            if 'BATCH_ID' in invivo_df.columns and pd.notna(batch_id):
-                annotation['batch id'] = batch_id
-            if 'EXT_CPD_ID' in invivo_df.columns and pd.notna(ext_cpd_id):
-                annotation['external compound'] = ext_cpd_id
-            if 'EXT_BATCH_ID' in invivo_df.columns and pd.notna(ext_batch_id):
-                annotation['external batch id'] = ext_batch_id
-            if 'DOSING_INFO' in invivo_df.columns and pd.notna(dosing_info):
-                annotation['treatment dosing information'] = dosing_info
-            if 'FREQUENCY' in invivo_df.columns and pd.notna(frequency):
-                annotation['frequency'] = frequency
-            if 'DOSE' in invivo_df.columns and pd.notna(treatment_dose):
-                annotation['treatment dose (mg/kg)'] = treatment_dose
-            if 'TDD' in invivo_df.columns and pd.notna(total_drug_dose):
-                annotation['total drug dose (mg/kg)'] = total_drug_dose
+                if pd.notna(cpd_id):
+                    annotation['compound'] = cpd_id
 
-            if pd.isna(RoA_dict):
-                RoA_dict = {}
-            elif not isinstance(RoA_dict, dict):
-                if RoA_dict == '':  # empty strings
-                    continue
-                RoA_dict = ast.literal_eval(RoA_dict.replace('nan', 'None'))
-            if pd.notna(RoA_dict):
-                annotation.update(RoA_dict)
+                if pd.notna(batch_id):
+                    annotation['batch id'] = batch_id
 
-            rel = Relationship(animal_group_node, "IS TREATED WITH", compound_node, **annotation)
-            tx.create(rel)
+                if pd.notna(ext_cpd_id):
+                    annotation['external compound'] = ext_cpd_id
+
+                if pd.notna(ext_batch_id):
+                    annotation['external batch id'] = ext_batch_id
+
+                if pd.notna(dosing_info):
+                    annotation['treatment dosing information'] = dosing_info
+
+                if pd.notna(frequency):
+                    annotation['frequency'] = frequency
+
+                if pd.notna(treatment_dose):
+                    annotation['treatment dose (mg/kg)'] = treatment_dose
+
+                if pd.notna(total_drug_dose):
+                    annotation['total drug dose (mg/kg)'] = total_drug_dose
+
+                if pd.notna(roa_dict):
+                    if not isinstance(roa_dict, dict):
+                        if roa_dict != '':  # empty strings
+                            roa_dict = ast.literal_eval(roa_dict.replace('nan', 'None'))
+
+                    annotation.update(roa_dict)
+
+                _create_relation(
+                    entity_a=node_mapping_dict["Animal group"][animal_group],
+                    relation_type="IS TREATED WITH",
+                    entity_b=node_mapping_dict["Compound"][cpd_id],
+                    tx=tx,
+                    rel_props=annotation
+                )
 
         """Batch -> Study type edge"""
         if pd.notna(batch_id) and pd.notna(study_type):
-            batch_node = node_mapping_dict["Batch"][batch_id]
-            study_type_node = node_mapping_dict["In-vivo study type"][study_type]
-            rel = Relationship(batch_node, "ASSOCIATED", study_type_node)
-            tx.create(rel)
+            if batch_id != 'NOT IN LIST (SEE COMMENT)':
+                _create_relation(
+                    entity_a=node_mapping_dict["Batch"][batch_id],
+                    relation_type="ASSOCIATED",
+                    entity_b=node_mapping_dict["In-vivo study type"][study_type],
+                    tx=tx,
+                )
 
         """Animal number -> Result edge"""
         if pd.notna(animal_number) and pd.notna(result_type):
-            animal_number_node = node_mapping_dict["Animal number"][animal_number]
-            result_node = node_mapping_dict["Result"][result_type]
-
             annotation = {}
 
             if pd.notna(value):
                 annotation['result value'] = value
+
             if pd.notna(operator):
                 annotation['result operator'] = operator
+
+            if pd.notna(method_dict):
+                annotation['statistical method'] = method_dict
+
+            if pd.notna(status):
+                annotation['result status'] = status
 
             if pd.isna(unit_dict):
                 unit_dict = {}
+
             elif not isinstance(unit_dict, dict):
-                if unit_dict == '':  # empty strings
-                    continue
-                unit_dict = ast.literal_eval(unit_dict.replace('nan', 'None'))
+                if unit_dict != '':  # empty strings
+                    unit_dict = ast.literal_eval(unit_dict.replace('nan', 'None'))
+
             if pd.notna(unit_dict):
                 annotation.update(unit_dict)
-            if pd.notna(method_dict):
-                annotation['statistical method'] = method_dict
-            if pd.notna(status):
-                annotation['result status'] = status
+
             if pd.notna(value) and pd.notna(operator) and 'name' in unit_dict:
-                annotation['result'] = str(operator) + str(value) + unit_dict['name']
+                if unit_dict['name'] == 'No unit':
+                    annotation['result'] = str(operator) + ' ' + str(value)
+                else:
+                    annotation['result'] = str(operator) + ' ' + str(value) + ' ' + unit_dict['name']
+
             if pd.notna(comments):
                 annotation['comments'] = comments
 
-            rel = Relationship(animal_number_node, "ASSOCIATED", result_node)
-            tx.create(rel)
+            _create_relation(
+                entity_a=node_mapping_dict["Animal number"][animal_number],
+                relation_type="ASSOCIATED",
+                entity_b=node_mapping_dict["Result"][result_type],
+                tx=tx,
+                rel_props=annotation
+            )
 
         # relations in both in-vivo and in-vitro datasets
-        """Animal species -> Specimen edge"""
-        if pd.notna(species) and pd.notna(biomaterial):
-            species_node = node_mapping_dict["Animal species"][species]
-            specimen_node = node_mapping_dict["Specimen"][biomaterial]
-            rel = Relationship(species_node, "ASSOCIATED", specimen_node)
-            tx.create(rel)
-
         """Specimen -> Bacteria edge"""
-        if (pd.notna(biomaterial) and pd.notna(strain_name)) and (strain_name in node_mapping_dict["Bacteria"]):
-            specimen_node = node_mapping_dict["Specimen"][biomaterial]
-            bacteria_node = node_mapping_dict["Bacteria"][strain_name]
-            rel = Relationship(specimen_node, "ASSOCIATED", bacteria_node)
-            tx.create(rel)
+        if pd.notna(biomaterial) and strain_name in node_mapping_dict["Bacteria"]:
+            _create_relation(
+                entity_a=node_mapping_dict["Specimen"][biomaterial],
+                relation_type="ASSOCIATED",
+                entity_b=node_mapping_dict["Bacteria"][strain_name],
+                tx=tx,
+            )
 
         """Bacteria -> Compounds edge"""
         if (pd.notna(strain_name) and pd.notna(cpd_id)) and (strain_name in node_mapping_dict["Bacteria"]):
-            bacteria_node = node_mapping_dict["Bacteria"][strain_name]
-            compound_node = node_mapping_dict["Compound"][cpd_id]
-            rel = Relationship(bacteria_node, "ASSOCIATED", compound_node)
-            tx.create(rel)
+            _create_relation(
+                entity_a=node_mapping_dict["Bacteria"][strain_name],
+                relation_type="ASSOCIATED",
+                entity_b=node_mapping_dict["Compound"][cpd_id],
+                tx=tx,
+            )
 
         """Partner -> Compounds edge"""
         if pd.notna(site_id) and pd.notna(cpd_id):
-            partner_node = node_mapping_dict["Partner"][site_id]
-            compound_node = node_mapping_dict["Compound"][cpd_id]
-            rel = Relationship(partner_node, "ASSOCIATED", compound_node)
-            tx.create(rel)
+            _create_relation(
+                entity_a=node_mapping_dict["Partner"][site_id],
+                relation_type="ASSOCIATED",
+                entity_b=node_mapping_dict["Compound"][cpd_id],
+                tx=tx,
+            )
 
         """Partner -> Experiment edge"""
         if pd.notna(site_id) and pd.notna(exp_id):
-            partner_node = node_mapping_dict["Partner"][site_id]
-            exp_node = node_mapping_dict["Experiment"][exp_id]
-            rel = Relationship(partner_node, "ASSOCIATED", exp_node)
-            tx.create(rel)
+            _create_relation(
+                entity_a=node_mapping_dict["Partner"][site_id],
+                relation_type="ASSOCIATED",
+                entity_b=node_mapping_dict["Experiment"][exp_id],
+                tx=tx,
+            )
 
         """Compound -> Batch edge"""
         if pd.notna(cpd_id) and pd.notna(batch_id):
-            compound_node = node_mapping_dict["Compound"][cpd_id]
-            batch_node = node_mapping_dict["Batch"][batch_id]
-            rel = Relationship(compound_node, "ASSOCIATED", batch_node)
-            tx.create(rel)
+            if batch_id != 'NOT IN LIST (SEE COMMENT)':
+                _create_relation(
+                    entity_a=node_mapping_dict["Compound"][cpd_id],
+                    relation_type="ASSOCIATED",
+                    entity_b=node_mapping_dict["Batch"][batch_id],
+                    tx=tx,
+                )
 
         """Batch -> Experiment type edge"""
         if pd.notna(batch_id) and pd.notna(exp_type):
-            batch_node = node_mapping_dict["Batch"][batch_id]
-            exp_type_node = node_mapping_dict["Experiment type"][exp_type]
-            rel = Relationship(batch_node, "ASSOCIATED", exp_type_node)
-            tx.create(rel)
+            _create_relation(
+                entity_a=node_mapping_dict["Batch"][batch_id],
+                relation_type="ASSOCIATED",
+                entity_b=node_mapping_dict["Experiment type"][exp_type],
+                tx=tx,
+            )
 
         """Experiment type -> Experiment edge"""
         if pd.notna(exp_type) and pd.notna(exp_id):
-            exp_type_node = node_mapping_dict["Experiment type"][exp_type]
-            exp_node = node_mapping_dict["Experiment"][exp_id]
-            rel = Relationship(exp_type_node, "ASSOCIATED", exp_node)
-            tx.create(rel)
+            _create_relation(
+                entity_a=node_mapping_dict["Experiment type"][exp_type],
+                relation_type="ASSOCIATED",
+                entity_b=node_mapping_dict["Experiment"][exp_id],
+                tx=tx,
+            )
 
         """Experiment -> Result edge"""
         if pd.notna(exp_id) and pd.notna(result_type):
-            exp_node = node_mapping_dict["Experiment"][exp_id]
-            result_node = node_mapping_dict["Result"][result_type]
-
             annotation = {}
 
             if pd.notna(value):
                 annotation['result value'] = value
+
             if pd.notna(operator):
                 annotation['result operator'] = operator
+
             if pd.notna(unit_dict):
                 annotation.update(unit_dict)
+
             if pd.notna(method_dict):
                 annotation['statistical method'] = method_dict
+
             if pd.notna(status):
                 annotation['result status'] = status
+
             if pd.notna(value) and pd.notna(operator) and 'name' in unit_dict:
-                annotation['result'] = str(operator) + str(value) + unit_dict['name']
+                if unit_dict['name'] == 'No unit':
+                    annotation['result'] = str(operator) + ' ' + str(value)
+                else:
+                    annotation['result'] = str(operator) + ' ' + str(value) + ' ' + unit_dict['name']
+
             if pd.notna(comments):
                 annotation['comments'] = comments
 
-            rel = Relationship(exp_node, "ASSOCIATED", result_node, **annotation)
-            tx.create(rel)
+            _create_relation(
+                entity_a=node_mapping_dict["Experiment"][exp_id],
+                relation_type="ASSOCIATED",
+                entity_b=node_mapping_dict["Result"][result_type],
+                tx=tx,
+                rel_props=annotation
+            )
+
 
     # in-vitro
     COLS_invitro_df = [
@@ -279,7 +375,7 @@ def add_relations(
         'EXT_BATCH_ID', 'EXT_CPD_ID'
     ]
 
-    for rows in tqdm(invitro_df[COLS_invitro_df].values, desc="Populating graph with relations based on in-vitro df"):
+    for rows in tqdm(invitro_df[COLS_invitro_df].values, desc="Populating graph with in-vitro data"):
         (
             exp_id, cpd_id, batch_id, site_id, biomaterial, strain_name, exp_type,
             result_type, method_dict, operator, value, status,
@@ -288,91 +384,108 @@ def add_relations(
         ) = rows
 
         # relations in both in-vivo and in-vitro dataset
-        """Animal species -> Specimen edge"""
-        if pd.notna(species) and pd.notna(biomaterial):
-            species_node = node_mapping_dict["Animal species"][species]
-            specimen_node = node_mapping_dict["Specimen"][biomaterial]
-            rel = Relationship(species_node, "ASSOCIATED", specimen_node)
-            tx.create(rel)
-
         """Specimen -> Bacteria edge"""
-        if (pd.notna(biomaterial) and pd.notna(strain_name)) and (strain_name in node_mapping_dict["Bacteria"]):
-            specimen_node = node_mapping_dict["Specimen"][biomaterial]
-            bacteria_node = node_mapping_dict["Bacteria"][strain_name]
-            rel = Relationship(specimen_node, "ASSOCIATED", bacteria_node)
-            tx.create(rel)
+        if pd.notna(biomaterial) and pd.notna(strain_name):
+            if strain_name in node_mapping_dict["Bacteria"]:
+                _create_relation(
+                    entity_a=node_mapping_dict["Specimen"][biomaterial],
+                    relation_type="ASSOCIATED",
+                    entity_b=node_mapping_dict["Bacteria"][strain_name],
+                    tx=tx,
+                )
 
         """Bacteria -> Compounds edge"""
-        if (pd.notna(biomaterial) and pd.notna(strain_name)) and (strain_name in node_mapping_dict["Bacteria"]):
-            bacteria_node = node_mapping_dict["Bacteria"][strain_name]
-            compound_node = node_mapping_dict["Compound"][cpd_id]
-            rel = Relationship(bacteria_node, "ASSOCIATED", compound_node)
-            tx.create(rel)
+        if cpd_id in node_mapping_dict["Compound"] and strain_name in node_mapping_dict["Bacteria"]:
+            _create_relation(
+                entity_a=node_mapping_dict["Bacteria"][strain_name],
+                relation_type="ASSOCIATED",
+                entity_b=node_mapping_dict["Compound"][cpd_id],
+                tx=tx,
+            )
 
         """Partner -> Compounds edge"""
         if pd.notna(site_id) and pd.notna(cpd_id):
-            partner_node = node_mapping_dict["Partner"][site_id]
-            compound_node = node_mapping_dict["Compound"][cpd_id]
-            rel = Relationship(partner_node, "ASSOCIATED", compound_node)
-            tx.create(rel)
+            _create_relation(
+                entity_a=node_mapping_dict["Partner"][site_id],
+                relation_type="ASSOCIATED",
+                entity_b=node_mapping_dict["Compound"][cpd_id],
+                tx=tx,
+            )
 
         """Partner -> Experiment edge"""
         if pd.notna(site_id) and pd.notna(exp_id):
-            partner_node = node_mapping_dict["Partner"][site_id]
-            exp_node = node_mapping_dict["Experiment"][exp_id]
-            rel = Relationship(partner_node, "ASSOCIATED", exp_node)
-            tx.create(rel)
+            _create_relation(
+                entity_a=node_mapping_dict["Partner"][site_id],
+                relation_type="ASSOCIATED",
+                entity_b=node_mapping_dict["Experiment"][exp_id],
+                tx=tx,
+            )
 
         """Compound -> Batch edge"""
         if pd.notna(cpd_id) and pd.notna(batch_id):
-            compound_node = node_mapping_dict["Compound"][cpd_id]
-            batch_node = node_mapping_dict["Batch"][batch_id]
-            rel = Relationship(compound_node, "ASSOCIATED", batch_node)
-            tx.create(rel)
+            _create_relation(
+                entity_a=node_mapping_dict["Compound"][cpd_id],
+                relation_type="ASSOCIATED",
+                entity_b=node_mapping_dict["Batch"][batch_id],
+                tx=tx,
+            )
 
         """Batch -> Experiment type edge"""
         if pd.notna(batch_id) and pd.notna(exp_type):
-            batch_node = node_mapping_dict["Batch"][batch_id]
-            exp_type_node = node_mapping_dict["Experiment type"][exp_type]
-            rel = Relationship(batch_node, "ASSOCIATED", exp_type_node)
-            tx.create(rel)
+            _create_relation(
+                entity_a=node_mapping_dict["Batch"][batch_id],
+                relation_type="ASSOCIATED",
+                entity_b=node_mapping_dict["Experiment type"][exp_type],
+                tx=tx,
+            )
 
         """Experiment type -> Experiment edge"""
         if pd.notna(exp_type) and pd.notna(exp_id):
-            exp_type_node = node_mapping_dict["Experiment type"][exp_type]
-            exp_node = node_mapping_dict["Experiment"][exp_id]
-            rel = Relationship(exp_type_node, "ASSOCIATED", exp_node)
-            tx.create(rel)
+            _create_relation(
+                entity_a=node_mapping_dict["Experiment type"][exp_type],
+                relation_type="ASSOCIATED",
+                entity_b=node_mapping_dict["Experiment"][exp_id],
+                tx=tx,
+            )
 
         """Experiment -> Result edge"""
         if pd.notna(exp_id) and pd.notna(result_type):
-            exp_node = node_mapping_dict["Experiment"][exp_id]
-            result_node = node_mapping_dict["Result"][result_type]
-
             annotation = {}
 
             if pd.notna(value):
                 annotation['result value'] = value
+
             if pd.notna(operator):
                 annotation['result operator'] = operator
 
             if pd.isna(unit_dict):
                 unit_dict = {}
             elif not isinstance(unit_dict, dict):
-                if unit_dict == '':  # empty strings
-                    continue
-                unit_dict = ast.literal_eval(unit_dict.replace('nan', 'None'))
+                if unit_dict != '':  # empty strings
+                    unit_dict = ast.literal_eval(unit_dict.replace('nan', 'None'))
+
             if pd.notna(unit_dict):
                 annotation.update(unit_dict)
 
             if pd.notna(method_dict):
                 annotation['statistical method'] = method_dict
+
             if pd.notna(status):
                 annotation['result status'] = status
+
             if pd.notna(value) and pd.notna(operator) and 'name' in unit_dict:
-                annotation['result'] = str(operator) + str(value) + unit_dict['name']
+                if unit_dict['name'] == 'No unit':
+                    annotation['result'] = str(operator) + ' ' + str(value)
+                else:
+                    annotation['result'] = str(operator) + ' ' + str(value) + ' ' + unit_dict['name']
+
             if pd.notna(comments):
                 annotation['comments'] = comments
 
-            rel = Relationship(exp_node, "ASSOCIATED", result_node, **annotation)
-            tx.create(rel)
+            _create_relation(
+                entity_a=node_mapping_dict["Experiment"][exp_id],
+                relation_type="ASSOCIATED",
+                entity_b=node_mapping_dict["Result"][result_type],
+                tx=tx,
+                rel_props=annotation
+            )
