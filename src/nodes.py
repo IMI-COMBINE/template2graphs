@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """Script to create different nodes in the data"""
-
+import ast
 import pandas as pd
 from ast import literal_eval
 from py2neo import Node
@@ -272,7 +272,14 @@ def add_nodes(
                 bact_annotation['bacterial strain dose'] = bact_dose
 
             if pd.notna(bact_RoA):
-                bact_annotation['bacterial strain ROA'] = bact_RoA
+                bact_RoA = ast.literal_eval(bact_RoA)
+                roa_dict = {}
+                for i, j in bact_RoA.items():
+                    if 'roa' in i:
+                        roa_dict[i] = j
+                    else:
+                        roa_dict[f'roa_{i}'] = j
+                bact_annotation.update(roa_dict)
 
             if bact_annotation['name'] == '0':
                 continue

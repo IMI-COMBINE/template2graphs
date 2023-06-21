@@ -14,7 +14,7 @@ from py2neo import Graph
 from nodes import add_nodes
 from relations import add_relations
 from data_preprocessing import harmonize_data
-from constants import DATA_DIR
+from constants import DATA_DIR, _NEW_PASSWORD, _URI, _ADMIN
 
 logger = logging.getLogger('__name__')
 
@@ -106,13 +106,18 @@ def get_invivo_data(
     return df_invivo_all
 
 
-def create_graph(invivo_df: pd.DataFrame, invitro_df: pd.DataFrame):
+def create_graph(invivo_df: pd.DataFrame, invitro_df: pd.DataFrame, use_local: bool = False):
     """Main function to create and populate the graph."""
 
-    # TODO: FixMe
-    graph_url = 'bolt://localhost:7687'
-    graph_admin_name = 'yojana'
-    graph_pass = 'tooba65'
+    if use_local:
+        # Local GNA-NOW instance
+        graph_url = 'bolt://localhost:7687'
+        graph_admin_name = 'yojana'
+        graph_pass = 'tooba65'
+    else:
+        graph_url = _URI
+        graph_admin_name = _ADMIN
+        graph_pass = _NEW_PASSWORD
 
     graph = Graph(
         graph_url,
@@ -234,6 +239,10 @@ if __name__ == '__main__':
         edge_data_invitro = pd.read_csv(
             f'{DATA_DIR}/invitro_data.tsv', sep='\t', dtype=str, low_memory=False
         )
+
+        cmp_subset = ['EOAI4017617', 'EOAI4017616']
+        edge_data_invitro = edge_data_invitro[edge_data_invitro.CPD_ID.isin(cmp_subset)]
+        edge_data_invivo = edge_data_invivo[edge_data_invivo.CPD_ID.isin(cmp_subset)]
 
     create_graph(invivo_df=edge_data_invivo, invitro_df=edge_data_invitro)
 

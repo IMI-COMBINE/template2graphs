@@ -344,7 +344,12 @@ def add_relations(
                 annotation.update(unit_dict)
 
             if pd.notna(method_dict):
-                annotation['statistical method'] = method_dict
+                method_dict = ast.literal_eval(method_dict)
+                method_dict = {
+                    f'statistical_{i}': j
+                    for i, j in method_dict.items()
+                }
+                annotation.update(method_dict)
 
             if pd.notna(status):
                 annotation['result status'] = status
@@ -357,6 +362,8 @@ def add_relations(
 
             if pd.notna(comments):
                 annotation['comments'] = comments
+
+            annotation['ELN'] = f'https://www.sciencecloud.com/experiments/notebook/experiment/{exp_id}'
 
             _create_relation(
                 entity_a=node_mapping_dict["Experiment"][exp_id],
@@ -468,7 +475,12 @@ def add_relations(
                 annotation.update(unit_dict)
 
             if pd.notna(method_dict):
-                annotation['statistical method'] = method_dict
+                method_dict = ast.literal_eval(method_dict)
+                method_dict = {
+                    f'statistical_{i}': j
+                    for i, j in method_dict.items()
+                }
+                annotation.update(method_dict)
 
             if pd.notna(status):
                 annotation['result status'] = status
@@ -481,6 +493,8 @@ def add_relations(
 
             if pd.notna(comments):
                 annotation['comments'] = comments
+
+            annotation['ELN'] = f'https://www.sciencecloud.com/experiments/notebook/experiment/{exp_id}'
 
             _create_relation(
                 entity_a=node_mapping_dict["Experiment"][exp_id],
