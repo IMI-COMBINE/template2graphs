@@ -134,3 +134,6 @@ dmypy.json
 .idea/*
 
 log/*
+
+# Custom
+src/Neuer Ordner/

@@ -233,7 +233,11 @@ def add_relations(
                 annotation['result operator'] = operator
 
             if pd.notna(method_dict):
-                annotation['statistical method'] = method_dict
+                method_dict = {
+                    f'statistical_{i}': j
+                    for i, j in method_dict.items()
+                }
+                annotation.update(method_dict)
 
             if pd.notna(status):
                 annotation['result status'] = status
