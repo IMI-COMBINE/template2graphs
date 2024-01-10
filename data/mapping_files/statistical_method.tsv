@@ -1,7 +1,7 @@
-STATISTICAL_METHOD	Curie	Name	Xrefs	synonyms	annotator	Comments
-Average	STATO:0000573	Average value				
-GeometricMean	STATO:0000396	Geometric mean				
-HarmonicMean	STATO:0000397	Harmonic mean				
-Median	OBCS_0000114	Median
-Mode	STATO:0000033	Mode				
+STATISTICAL_METHOD	Curie	Name
+Average	STATO:0000573	Average value
+GeometricMean	STATO:0000396	Geometric mean
+HarmonicMean	STATO:0000397	Harmonic mean
+Median	OBCS:0000114	Median
+Mode	STATO:0000033	Mode
 Single value	NCIT:C25712	Value
