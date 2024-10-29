@@ -21,9 +21,13 @@ The repository is a workflow to generate a knowledge graph from lab data templat
 ├── LICENSE
 ├── README.md
 ├── data
-│   ├── dummy
-│   │   ├── invitro_dummy_data.tsv 
-│   │   └── invivo_dummy_data.xlsx
+│   ├── exps
+│   │   ├── dummy
+│   │   │   ├── invitro_dummy_data.xlsx
+│   │   │   └── invivo_dummy_data.xlsx
+│   │   └── dummy2
+│   │   │   ├── invitro_dummy2_data.xlsx
+│   │   │   └── invivo_dummy2_data.xlsx
 │   ├── mapping_files
 │   │   ├── bacterial_strain.tsv
 │   │   ├── biomaterials.tsv
@@ -36,8 +40,9 @@ The repository is a workflow to generate a knowledge graph from lab data templat
 │   │   ├── species.tsv
 │   │   ├── statistical_method.tsv
 │   │   └── study_type.tsv
-│   ├── processed_invitro_template.tsv
-│   └── processed_invivo_template.tsv
+│   ├── node_dict.json
+│   ├── processed_invitro_data.tsv
+│   └── processed_invivo_data.tsv
 ├── requirements.txt
 └── src
     ├── constants.py
@@ -47,7 +52,7 @@ The repository is a workflow to generate a knowledge graph from lab data templat
     └── relations.py
 ```
 
-* The [dummy directory](data/dummy/) consists of a pre-filled example template for in-vitro and in-vivo studies.
+* The [exps directory](data/exps/) consists of a list of experiment directorys with pre-filled template for in-vitro and in-vivo studies. Here we just have "dummy" template, but have also shown "dummy2" as an example for adding future experimental runs.
 * The [mapping directory](data/mapping_files/) consist of ontology mapped terms of the template. This is catered towards the experiments developed and performed in the project and can be easily adapted for other usecases using the ontology service [OLS](https://www.ebi.ac.uk/ols4).
 * The [src directory](src/) consists of all the python scripts required to transform the lab data template to knowledge graphs.
 
