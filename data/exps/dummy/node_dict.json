@@ -1,0 +1,609 @@
+{
+  "Animal species": {
+    "Mice": {
+      "curie": "NCBITaxon:10090",
+      "name": "Mice",
+      "species_name": "Mus musculus"
+    },
+    "Rats": {
+      "curie": "NCBITaxon:10116",
+      "name": "Rats",
+      "species_name": "Rattus norvegicus"
+    }
+  },
+  "Animal group": {
+    "Treated-01": {
+      "animal group": "Treated-01",
+      "no. animals (housing cage)": "4",
+      "food": "ad libitum",
+      "light dark cycle": "12-12"
+    },
+    "Treated-02": {
+      "animal group": "Treated-02",
+      "no. animals (housing cage)": "4",
+      "food": "ad libitum",
+      "light dark cycle": "12-12"
+    },
+    "Treated-03": {
+      "animal group": "Treated-03",
+      "no. animals (housing cage)": "4",
+      "food": "ad libitum",
+      "light dark cycle": "12-12"
+    },
+    "GrowthControl": {
+      "animal group": "GrowthControl",
+      "no. animals (housing cage)": "4",
+      "food": "ad libitum",
+      "light dark cycle": "12-12"
+    },
+    "InfectionControl": {
+      "animal group": "InfectionControl",
+      "no. animals (housing cage)": "4",
+      "food": "ad libitum",
+      "light dark cycle": "12-12"
+    },
+    "0": {
+      "animal group": "0",
+      "no. animals (housing cage)": "4",
+      "food": "ad libitum",
+      "light dark cycle": "12-12"
+    }
+  },
+  "Animal number": {
+    "1": {
+      "animal": "1",
+      "animal id": "1",
+      "animal sex curie": "PATO:0000383",
+      "animal sex": "Female",
+      "animal strain": "CD-1 Crl:CD1(ICR)",
+      "animal vendor": "Charles River, Germany",
+      "body weight mean": "23.7",
+      "body weight range": "21,5-27,8",
+      "age range": "7-8"
+    },
+    "2": {
+      "animal": "2",
+      "animal id": "2",
+      "animal sex curie": "PATO:0000383",
+      "animal sex": "Female",
+      "animal strain": "CD-1 Crl:CD1(ICR)",
+      "animal vendor": "Charles River, Germany",
+      "body weight mean": "23.7",
+      "body weight range": "21,5-27,8",
+      "age range": "7-8"
+    },
+    "3": {
+      "animal": "3",
+      "animal id": "3",
+      "animal sex curie": "PATO:0000383",
+      "animal sex": "Female",
+      "animal strain": "CD-1 Crl:CD1(ICR)",
+      "animal vendor": "Charles River, Germany",
+      "body weight mean": "23.7",
+      "body weight range": "21,5-27,8",
+      "age range": "7-8"
+    },
+    "4": {
+      "animal": "4",
+      "animal id": "4",
+      "animal sex curie": "PATO:0000383",
+      "animal sex": "Female",
+      "animal strain": "CD-1 Crl:CD1(ICR)",
+      "animal vendor": "Charles River, Germany",
+      "body weight mean": "23.7",
+      "body weight range": "21,5-27,8",
+      "age range": "7-8"
+    },
+    "5": {
+      "animal": "5",
+      "animal id": "5",
+      "animal sex curie": "PATO:0000383",
+      "animal sex": "Female",
+      "animal strain": "CD-1 Crl:CD1(ICR)",
+      "animal vendor": "Charles River, Germany",
+      "body weight mean": "23.7",
+      "body weight range": "21,5-27,8",
+      "age range": "7-8"
+    },
+    "6": {
+      "animal": "6",
+      "animal id": "6",
+      "animal sex curie": "PATO:0000383",
+      "animal sex": "Female",
+      "animal strain": "CD-1 Crl:CD1(ICR)",
+      "animal vendor": "Charles River, Germany",
+      "body weight mean": "23.7",
+      "body weight range": "21,5-27,8",
+      "age range": "7-8"
+    },
+    "7": {
+      "animal": "7",
+      "animal id": "7",
+      "animal sex curie": "PATO:0000383",
+      "animal sex": "Female",
+      "animal strain": "CD-1 Crl:CD1(ICR)",
+      "animal vendor": "Charles River, Germany",
+      "body weight mean": "23.7",
+      "body weight range": "21,5-27,8",
+      "age range": "7-8"
+    },
+    "8": {
+      "animal": "8",
+      "animal id": "8",
+      "animal sex curie": "PATO:0000383",
+      "animal sex": "Female",
+      "animal strain": "CD-1 Crl:CD1(ICR)",
+      "animal vendor": "Charles River, Germany",
+      "body weight mean": "23.7",
+      "body weight range": "21,5-27,8",
+      "age range": "7-8"
+    },
+    "9": {
+      "animal": "9",
+      "animal id": "9",
+      "animal sex curie": "PATO:0000383",
+      "animal sex": "Female",
+      "animal strain": "CD-1 Crl:CD1(ICR)",
+      "animal vendor": "Charles River, Germany",
+      "body weight mean": "23.7",
+      "body weight range": "21,5-27,8",
+      "age range": "7-8"
+    },
+    "10": {
+      "animal": "10",
+      "animal id": "10",
+      "animal sex curie": "PATO:0000383",
+      "animal sex": "Female",
+      "animal strain": "CD-1 Crl:CD1(ICR)",
+      "animal vendor": "Charles River, Germany",
+      "body weight mean": "23.7",
+      "body weight range": "21,5-27,8",
+      "age range": "7-8"
+    },
+    "0": {
+      "animal": "0",
+      "animal id": "0",
+      "animal sex curie": "PATO:0000383",
+      "animal sex": "Female",
+      "animal strain": "CD-1 Crl:CD1(ICR)",
+      "animal vendor": "Charles River, Germany",
+      "body weight mean": "23.7",
+      "body weight range": "21,5-27,8",
+      "age range": "7-8"
+    }
+  },
+  "In-vivo study type": {
+    "Exposure response study": {
+      "curie": "GNA:00023",
+      "name": "Exposure response study"
+    }
+  },
+  "Study": {
+    "GNA-NOW_EMC_357824": {
+      "study id": "GNA-NOW_EMC_357824",
+      "experiment id": "ELN-RZ-148",
+      "study protocol name": "Exposure response study_protocol_v8.pdf",
+      "study start date": "2019-06-25",
+      "provenance": "EMC@GNA-NOW.com",
+      "project licence number": "A12-KL6-G82"
+    }
+  },
+  "Specimen": {
+    "Animal": {
+      "curie": "NCIT:C14182",
+      "name": "Animal"
+    },
+    "Bacteria": {
+      "curie": "NCBITaxon:2",
+      "name": "Bacteria"
+    },
+    "Cell": {
+      "curie": "NCIT:C12508",
+      "name": "Cell"
+    }
+  },
+  "Bacteria": {
+    "KLEOX 82917": {
+      "curie": "NBT:82917KLEOX",
+      "name": "KLEOX 82917",
+      "sample": "Blood",
+      "category": "R Quinolone",
+      "bacterial strain dose": "3000000.00000001",
+      "roa_curie": "OBI:0000983",
+      "roa_name": "i.n.",
+      "roa_full_name": "intranasal mucosal administration",
+      "roa_xrefs": "NCIT:C38284, VO:0000341",
+      "roa_synonyms": "intranasal route"
+    },
+    "ESCCO 25922": {
+      "name": "ESCCO 25922"
+    },
+    "ENTEBU 86397": {
+      "curie": "NBT:86397ENTEBU",
+      "name": "ENTEBU 86397",
+      "sample": "Blood",
+      "category": "Quinolone S"
+    },
+    "KLEPN 43816": {
+      "name": "KLEPN 43816"
+    },
+    "KLEOX 79245": {
+      "curie": "NBT:79245KLEOX",
+      "name": "KLEOX 79245",
+      "sample": "Plueral fluid",
+      "category": "Quinolone S"
+    },
+    "ACIBA 19606": {
+      "name": "ACIBA 19606"
+    },
+    "ACIBA 69105": {
+      "curie": "NBT:69105ACIBA",
+      "name": "ACIBA 69105",
+      "sample": "Blood",
+      "category": "CARBR"
+    },
+    "PSEAE PA01": {
+      "name": "PSEAE PA01"
+    }
+  },
+  "Partner": {
+    "EMC": {
+      "name": "EMC",
+      "site contact": "EMC@GNA-NOW.com"
+    },
+    "EVT": {
+      "name": "EVT",
+      "site contact": "EVT@GNA-NOW.com"
+    },
+    "NOS": {
+      "name": "NOS",
+      "site contact": "NOS@GNA-NOW.com"
+    },
+    "NBT": {
+      "name": "NBT",
+      "site contact": "NBT@GNA-NOW.com"
+    },
+    "HZI": {
+      "name": "HZI",
+      "site contact": "HZI@GNA-NOW.com"
+    }
+  },
+  "Compound": {
+    "CPD_0003": {
+      "name": "CPD_0003"
+    },
+    "Placebo": {
+      "name": "Placebo"
+    },
+    "0": {
+      "name": "0"
+    },
+    "CPD_0001": {
+      "name": "CPD_0001",
+      "compound external id": "Compound-A-0001"
+    },
+    "CPD_0002": {
+      "name": "CPD_0002"
+    },
+    "CPD_0004": {
+      "name": "CPD_0004"
+    },
+    "CPD_0005": {
+      "name": "CPD_0005"
+    },
+    "CPD_0006": {
+      "name": "CPD_0006"
+    },
+    "CPD_0007": {
+      "name": "CPD_0007"
+    },
+    "CPD_0008": {
+      "name": "CPD_0008"
+    },
+    "CPD_0009": {
+      "name": "CPD_0009"
+    },
+    "CPD_0010": {
+      "name": "CPD_0010"
+    },
+    "CPD_0011": {
+      "name": "CPD_0011"
+    },
+    "CPD_0012": {
+      "name": "CPD_0012"
+    },
+    "CPD_0013": {
+      "name": "CPD_0013"
+    },
+    "CPD_0014": {
+      "name": "CPD_0014",
+      "compound external id": "Compound-K-0014"
+    },
+    "CPD_0015": {
+      "name": "CPD_0015"
+    }
+  },
+  "Batch": {
+    "BATCH_ID_MKG248": {
+      "batch id": "BATCH_ID_MKG248"
+    },
+    "0": {
+      "batch id": "0"
+    },
+    "BATCH_ID_AYC789": {
+      "batch id": "BATCH_ID_AYC789",
+      "batch external id": "BATCH-AYC"
+    },
+    "BATCH_ID_DGZ159": {
+      "batch id": "BATCH_ID_DGZ159"
+    },
+    "BATCH_ID_BDO149": {
+      "batch id": "BATCH_ID_BDO149"
+    },
+    "BATCH_ID_JNZ135": {
+      "batch id": "BATCH_ID_JNZ135"
+    },
+    "BATCH_ID_OLA378": {
+      "batch id": "BATCH_ID_OLA378"
+    },
+    "BATCH_ID_PLA886": {
+      "batch id": "BATCH_ID_PLA886"
+    },
+    "BATCH_ID_GFR238": {
+      "batch id": "BATCH_ID_GFR238"
+    },
+    "BATCH_ID_ASV127": {
+      "batch id": "BATCH_ID_ASV127"
+    },
+    "BATCH_ID_MKL369": {
+      "batch id": "BATCH_ID_MKL369"
+    },
+    "BATCH_ID_OIK584": {
+      "batch id": "BATCH_ID_OIK584"
+    },
+    "BATCH_ID_HDU567": {
+      "batch id": "BATCH_ID_HDU567"
+    },
+    "BATCH_ID_ADP734": {
+      "batch id": "BATCH_ID_ADP734"
+    },
+    "BATCH_ID_PLS585": {
+      "batch id": "BATCH_ID_PLS585",
+      "batch external id": "BATCH-PLS"
+    },
+    "BATCH_ID_SDZ617": {
+      "batch id": "BATCH_ID_SDZ617"
+    }
+  },
+  "Experiment type": {
+    "Lung CFU": {
+      "curie": "GNA:00020",
+      "name": "Lung CFU",
+      "experimental_type": "Colony forming units in lung homogenates",
+      "modified_name": "CFU_Lung",
+      "definition": "lung homogenates of sacrificed mice, colony-forming units"
+    },
+    "FoR": {
+      "curie": "GNA:00010",
+      "name": "FoR",
+      "experimental_type": "Frequency of resistance",
+      "modified_name": "Frequency of resistance",
+      "definition": "Frequency of resistance"
+    },
+    "HepG2_cytotoxicity": {
+      "curie": "GNA:00012",
+      "name": "HepG2_cytotoxicity",
+      "experimental_type": "Cytotoxicity assay on HepG2",
+      "modified_name": "Cytotoxicity_HepG2",
+      "definition": "cytotoxicity assay on HepG2"
+    },
+    "Membrane_permeabilisation_inner": {
+      "curie": "GNA:00017",
+      "name": "Membrane_permeabilisation_inner",
+      "experimental_type": "Permeabilization of inner membrane of bacteria",
+      "modified_name": "Membrane permeabilisation_inner",
+      "definition": "Permeabilization of inner membrane of bacteria"
+    },
+    "IVTT": {
+      "curie": "GNA:00013",
+      "name": "IVTT",
+      "experimental_type": "in-vitro transcription translation assay",
+      "modified_name": "in-vitro transcription translation assay",
+      "definition": "vitro transcription/translation assay"
+    },
+    "Membrane_permeabilisation_outer": {
+      "curie": "GNA:00018",
+      "name": "Membrane_permeabilisation_outer",
+      "experimental_type": "Permeabilization of outer membrane of bacteria",
+      "modified_name": "Membrane permeabilisation_outer",
+      "definition": "Permeabilization of outer membrane of bacteria"
+    },
+    "Hemolysis": {
+      "curie": "EFO:0009473",
+      "name": "Hemolysis",
+      "experimental_type": "Hemolysis",
+      "modified_name": "Hemolysis",
+      "definition": "The hemolysis test is used to evaluate the in vitro hemolytic potential of compounds."
+    },
+    "MIC": {
+      "curie": "ARO:3004370",
+      "name": "MIC",
+      "experimental_type": "Minimum inhibitory concentration (MIC)",
+      "modified_name": "MIC",
+      "definition": "Minimal Inhibitory Concentration"
+    },
+    "Accumulation": {
+      "curie": "GNA:00009",
+      "name": "Accumulation",
+      "experimental_type": "Accumulation",
+      "modified_name": "Accumulation",
+      "definition": "intracellular compound accumulation"
+    },
+    "Fractionation": {
+      "curie": "GNA:00011",
+      "name": "Fractionation",
+      "experimental_type": "Fractionation",
+      "modified_name": "Fractionation",
+      "definition": "quantification of intracellular antibiotic concentrations"
+    }
+  },
+  "Experiment": {
+    "ELN-RZ-148": {
+      "No. of in-vivo experiments": "ExperimentResults_01",
+      "study id": "GNA-NOW_EMC_357824",
+      "experiment id": "ELN-RZ-148",
+      "experiment date": "2019-06-25",
+      "experiment protocol": "Exposure response study_protocol_v8.pdf",
+      "experiment control group": "InfectionControl",
+      "planned relative time point": "6",
+      "relative time point": "6"
+    },
+    "ELN-AK-25667": {
+      "study id": "GNA-NOW_EMC_01",
+      "experiment id": "ELN-AK-25667",
+      "experiment date": "13/5/2021",
+      "experiment protocol": "GNA-NOW_EMC_FoR_protocol_v01.pdf",
+      "experiment control group": "plates without compound",
+      "medium_acronym": "MHB",
+      "medium_name": "MHB with agarose",
+      "medium_pH": "",
+      "medium_additives": "agarose",
+      "medium_curie": "ARO:3004424"
+    },
+    "ELN-KE-64289": {
+      "study id": "GNA-NOW_EVT_03",
+      "experiment id": "ELN-KE-64289",
+      "experiment date": "10/3/2021",
+      "experiment protocol": "GNA-NOW_EVT_cytotoxicity_protocol_v01.pdf"
+    },
+    "ELN-TR-12859": {
+      "study id": "GNA-NOW_NOS_07A",
+      "experiment id": "ELN-TR-12859",
+      "experiment date": "28/1/2021",
+      "experiment protocol": "GNA-NOW_NOS_Membrane_permeabilisation_inner_protocol_v01.pdf",
+      "experiment control group": "positive"
+    },
+    "ELN-TR-12860": {
+      "study id": "GNA-NOW_NOS_07A",
+      "experiment id": "ELN-TR-12860",
+      "experiment date": "29/1/2021",
+      "experiment protocol": "GNA-NOW_NOS_IVTT_v01.pdf",
+      "experiment control group": "untreated"
+    },
+    "ELN-TR-12861": {
+      "study id": "GNA-NOW_NOS_07A",
+      "experiment id": "ELN-TR-12861",
+      "experiment date": "15/9/2020",
+      "experiment protocol": "GNA-NOW_NOS_Membrane_permeabilisation_outer_v01.pdf",
+      "experiment control group": "positive"
+    },
+    "ELN-TR-12862": {
+      "study id": "GNA-NOW_NOS_07A",
+      "experiment id": "ELN-TR-12862",
+      "experiment date": "2/7/2020",
+      "experiment protocol": "GNA-NOW_NOS_Hemolysis_v01.pdf",
+      "experiment control group": "untreated"
+    },
+    "ELN-ND-55489": {
+      "study id": "GNA-NOW_NBT_03",
+      "experiment id": "ELN-ND-55489",
+      "experiment date": "11/8/2021",
+      "experiment protocol": "GNA-NOW_NBT_MIC_v01.pdf",
+      "medium_acronym": "MHB2",
+      "medium_name": "MHB2",
+      "medium_pH": "",
+      "medium_additives": "",
+      "medium_curie": "SIGMA:90922"
+    },
+    "ELN-ND-55490": {
+      "study id": "GNA-NOW_NBT_03",
+      "experiment id": "ELN-ND-55490",
+      "experiment date": "11/8/2021",
+      "experiment protocol": "GNA-NOW_NBT_MIC_v01.pdf",
+      "medium_acronym": "MHB2",
+      "medium_name": "MHB2",
+      "medium_pH": "",
+      "medium_additives": "",
+      "medium_curie": "SIGMA:90922"
+    },
+    "ELN-ND-55491": {
+      "study id": "GNA-NOW_NBT_03",
+      "experiment id": "ELN-ND-55491",
+      "experiment date": "11/8/2021",
+      "experiment protocol": "GNA-NOW_NBT_MIC_v01.pdf",
+      "medium_acronym": "MHB2",
+      "medium_name": "MHB2",
+      "medium_pH": "",
+      "medium_additives": "",
+      "medium_curie": "SIGMA:90922"
+    },
+    "ELN-FU-63287": {
+      "study id": "GNA-NOW_HZI_02B",
+      "experiment id": "ELN-FU-63287",
+      "experiment date": "17/3/2020",
+      "experiment protocol": "GNA-NOW_HZI_Accumulation_v01.pdf",
+      "medium_acronym": "MHB2",
+      "medium_name": "MHB2",
+      "medium_pH": "",
+      "medium_additives": "",
+      "medium_curie": "SIGMA:90922"
+    },
+    "ELN-FU-63288": {
+      "study id": "GNA-NOW_HZI_02B",
+      "experiment id": "ELN-FU-63288",
+      "experiment date": "3/8/2020",
+      "experiment protocol": "GNA-NOW_HZI_Fractionation_v01.pdf",
+      "medium_acronym": "MHB2",
+      "medium_name": "MHB2 pH adjusted 5.0",
+      "medium_pH": 5.0,
+      "medium_additives": "",
+      "medium_curie": "SIGMA:90922"
+    },
+    "ELN-FU-63289": {
+      "study id": "GNA-NOW_HZI_02B",
+      "experiment id": "ELN-FU-63289",
+      "experiment date": "3/8/2020",
+      "experiment protocol": "GNA-NOW_HZI_Fractionation_v01.pdf",
+      "medium_acronym": "MHB2",
+      "medium_name": "MHB2",
+      "medium_pH": "",
+      "medium_additives": "",
+      "medium_curie": "SIGMA:90922"
+    }
+  },
+  "Result": {
+    "dCFU": {
+      "type": "dCFU"
+    },
+    "FoR": {
+      "type": "FoR"
+    },
+    "AC50": {
+      "type": "AC50"
+    },
+    "PERCENT": {
+      "type": "PERCENT"
+    },
+    "IC50": {
+      "type": "IC50"
+    },
+    "MIC": {
+      "type": "MIC"
+    },
+    "Amount_cpd_in_fraction_Whole_Cell": {
+      "type": "Amount_cpd_in_fraction_Whole_Cell"
+    },
+    "Amount_cpd_in_fraction_Periplasm": {
+      "type": "Amount_cpd_in_fraction_Periplasm"
+    },
+    "Amount_cpd_in_fraction_Cytoplasm": {
+      "type": "Amount_cpd_in_fraction_Cytoplasm"
+    },
+    "Amount_cpd_in_fraction_Membrane": {
+      "type": "Amount_cpd_in_fraction_Membrane"
+    },
+    "Amount_cpd_in_fraction_SumFractions": {
+      "type": "Amount_cpd_in_fraction_SumFractions"
+    }
+  }
+}
