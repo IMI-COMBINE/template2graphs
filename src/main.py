@@ -121,13 +121,21 @@ def get_invivo_data(
 
 
 def create_graph(
-    invivo_df: pd.DataFrame, invitro_df: pd.DataFrame, credentials: Dict[str, str]
+    invivo_df: pd.DataFrame,
+    invitro_df: pd.DataFrame,
+    credentials: Dict[str, str],
+    exp_dir: str,
 ):
     """Main function to create and populate the graph.
     :param invivo_df: In-vivo data
     :param invitro_df: In-vitro data
     :param credentials: Graph credentials
     """
+
+    if invivo_df.empty and invitro_df.empty:
+        logger.error("No data to create the graph")
+        return
+
     graph = Graph(
         credentials["uri"],
         auth=(credentials["user"], credentials["password"]),
@@ -152,14 +160,16 @@ def create_graph(
     }
 
     # Creating nodes for invivo experiments
-    logger.warning("Creating nodes for invivo experiments")
-    node_dict = add_nodes(tx=tx, df=invivo_df, node_dict=node_dict)
+    if not invivo_df.empty:
+        logger.warning("Creating nodes for invivo experiments")
+        node_dict = add_nodes(tx=tx, df=invivo_df, node_dict=node_dict)
 
     # Populating nodes for invitro experiments
-    logger.warning("Creating nodes for invitro experiments")
-    node_map = add_nodes(tx=tx, df=invitro_df, node_dict=node_dict)
+    if not invitro_df.empty:
+        logger.warning("Creating nodes for invitro experiments")
+        node_map = add_nodes(tx=tx, df=invitro_df, node_dict=node_dict)
 
-    with open(f"{DATA_DIR}/node_dict.json", "w") as f:
+    with open(f"{exp_dir}/node_dict.json", "w") as f:
         json.dump(node_map, f, indent=2, ensure_ascii=False)
 
     graph.commit(tx)
@@ -199,10 +209,10 @@ def load_data(exp_dir: str) -> None:
                 invitro_dfs.append(df)
 
     invivo_df = pd.concat(invivo_dfs, ignore_index=True)
-    invivo_df.to_csv(f"{DATA_DIR}/processed_invivo_data.tsv", index=False, sep="\t")
+    invivo_df.to_csv(f"{exp_dir}/processed_invivo_data.tsv", index=False, sep="\t")
 
     invitro_df = pd.concat(invitro_dfs, ignore_index=True)
-    invitro_df.to_csv(f"{DATA_DIR}/processed_invitro_data.tsv", index=False, sep="\t")
+    invitro_df.to_csv(f"{exp_dir}/processed_invitro_data.tsv", index=False, sep="\t")
 
     logger.warning(f"No.of in-vivo data points: {len(invivo_df)}")
     logger.warning(f"No.of in-vitro data points: {len(invitro_df)}")
@@ -212,17 +222,19 @@ def load_data(exp_dir: str) -> None:
 
 if __name__ == "__main__":
 
-    if not os.path.exists(f"{DATA_DIR}/processed_invivo_data.tsv"):
-        load_data(exp_dir="../data/exps")  # Load data from experiments
+    exp_dir_name = f"{DATA_DIR}/exps/noso-502"
+    # exp_dir_name = f"{DATA_DIR}/exps/dummy"
+    if not os.path.exists(f"{exp_dir_name}/processed_invivo_data.tsv"):
+        load_data(exp_dir=exp_dir_name)  # Load data from experiments
 
     edge_data_invivo = pd.read_csv(
-        f"{DATA_DIR}/processed_invivo_data.tsv",
+        f"{exp_dir_name}/processed_invivo_data.tsv",
         sep="\t",
         dtype=str,
         low_memory=False,
     )
     edge_data_invitro = pd.read_csv(
-        f"{DATA_DIR}/processed_invitro_data.tsv",
+        f"{exp_dir_name}/processed_invitro_data.tsv",
         sep="\t",
         dtype=str,
         low_memory=False,
@@ -241,4 +253,5 @@ if __name__ == "__main__":
             "user": graph_admin_name,
             "password": graph_pass,
         },
+        exp_dir=exp_dir_name,
     )
