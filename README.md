@@ -24,10 +24,18 @@ The repository is a workflow to generate a knowledge graph from lab data templat
 │   ├── exps
 │   │   ├── dummy
 │   │   │   ├── invitro_dummy_data.xlsx
-│   │   │   └── invivo_dummy_data.xlsx
-│   │   └── dummy2
-│   │   │   ├── invitro_dummy2_data.xlsx
-│   │   │   └── invivo_dummy2_data.xlsx
+│   │   │   ├── invivo_dummy_data.xlsx
+│   │   │   ├── node_dict.json
+│   │   │   ├── processed_invitro_data.tsv
+│   │   │   └── processed_invivo_data.tsv
+│   │   └── noso-502
+│   │   │   ├── invitro_NBT_MIC.xlsx
+│   │   │   └── invivo_EMC_DF_Ec.xlsx
+│   │   │   └── invivo_EMC_DF_Kp.xlsx
+│   │   │   └── invivo_EMC_PK_Ec.xlsx
+│   │   │   ├── node_dict.json
+│   │   │   ├── processed_invitro_data.tsv
+│   │   │   └── processed_invivo_data.tsv
 │   ├── mapping_files
 │   │   ├── bacterial_strain.tsv
 │   │   ├── biomaterials.tsv
@@ -40,9 +48,6 @@ The repository is a workflow to generate a knowledge graph from lab data templat
 │   │   ├── species.tsv
 │   │   ├── statistical_method.tsv
 │   │   └── study_type.tsv
-│   ├── node_dict.json
-│   ├── processed_invitro_data.tsv
-│   └── processed_invivo_data.tsv
 ├── requirements.txt
 └── src
     ├── constants.py
@@ -52,8 +57,8 @@ The repository is a workflow to generate a knowledge graph from lab data templat
     └── relations.py
 ```
 
-* The [exps directory](data/exps/) consists of a list of experiment directorys with pre-filled template for in-vitro and in-vivo studies. Here we just have "dummy" template, but have also shown "dummy2" as an example for adding future experimental runs.
-* The [mapping directory](data/mapping_files/) consist of ontology mapped terms of the template. This is catered towards the experiments developed and performed in the project and can be easily adapted for other usecases using the ontology service [OLS](https://www.ebi.ac.uk/ols4).
+* The [exps directory](data/exps/) consists of a list of experiment directory with pre-filled template for *in vitro* and *in vivo* studies. Here we just have "dummy" template, but have also shown "dummy2" as an example for adding future experimental runs.
+* The [mapping directory](data/mapping_files/) consists of ontology mapped terms of the template. This is catered towards the experiments developed and performed in the project and can be easily adapted for other use cases using the ontology service [OLS](https://www.ebi.ac.uk/ols4).
 * The [src directory](src/) consists of all the python scripts required to transform the lab data template to knowledge graphs.
 
 ### Prerequisite
@@ -73,7 +78,7 @@ pip install -r requirements.txt
 
 2. Making the Lab data templates ready for graph ingestion
 * Ensure that all your experiments are located in a directory form under `exps` folder. This way each experiment can be cataloged into specific directory using [FAIR data management guidelines](https://rdmkit.elixir-europe.org/data_organisation)
-* Go to the [main.py](src/main.py) file and either change the credential details to your login detials or add a new user with the credentials listed and provide admin access to the database.
+* Go to the [main.py](src/main.py) file and either change the credential details to your login details or add a new user with the credentials listed and provide admin access to the database.
 ```bash
 cd src
 python main.py
