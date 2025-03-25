@@ -426,14 +426,6 @@
       "experiment id": "Pharmacokinetics study",
       "provenance": "s.vandenberg@erasmusmc.nl"
     },
-    "2. PK": {
-      "study id": "2. PK",
-      "experiment id": "220308",
-      "study protocol name": "DOI: 10.1093/jac/dkae469",
-      "study start date": "2022-03-04 00:00:00",
-      "provenance": "s.vandenberg@erasmusmc.nl",
-      "project licence number": "16-702-62"
-    },
     "3. PD": {
       "study id": "3. PD",
       "experiment id": "Dose fractionation study",
@@ -3067,10 +3059,6 @@
     "220307": {
       "study id": "1. PK",
       "experiment id": "220307"
-    },
-    "220308": {
-      "study id": "2. PK",
-      "experiment id": "220308"
     },
     "Dose fractionation study": {
       "No. of in-vivo experiments": "ExperimentResults_01",
