@@ -12,7 +12,7 @@ More datasets and templates can be found on Zenodo:
 
 ## How to use the repository?
 
-The repository is a workflow to generate a knowledge graph from lab data template allowing for querying and visualizing experimental data in a meaningful and efficient manner.
+The repository is a workflow to generate a knowledge graph from a lab data template, allowing for querying and visualizing experimental data in a meaningful and efficient manner.
 
 ### Directory overview
 
@@ -57,13 +57,13 @@ The repository is a workflow to generate a knowledge graph from lab data templat
     └── relations.py
 ```
 
-* The [exps directory](data/exps/) consists of a list of experiment directory with pre-filled template for *in vitro* and *in vivo* studies. Here we just have "dummy" template, but have also shown "dummy2" as an example for adding future experimental runs.
+* The [exps directory](data/exps/) consists of a list of experiment directories with pre-filled templates for *in vitro* and *in vivo* studies. Here, we show examples of "dummy" datasets and a NOSO-502 (internal project data).
 * The [mapping directory](data/mapping_files/) consists of ontology mapped terms of the template. This is catered towards the experiments developed and performed in the project and can be easily adapted for other use cases using the ontology service [OLS](https://www.ebi.ac.uk/ols4).
-* The [src directory](src/) consists of all the python scripts required to transform the lab data template to knowledge graphs.
+* The [src directory](src/) consists of all the Python scripts required to transform the lab data template into knowledge graphs.
 
 ### Prerequisite
 
-The graph is being built on Neo4J. Hence, it is recommended to open a Neo4J instance Desktop version prior to running the scripts.
+The graph is being built on Neo4J. Hence, it is recommended that a Neo4J instance be opened in the Desktop version prior to running the scripts.
 
 ### Step-by-step process
 
@@ -77,8 +77,8 @@ pip install -r requirements.txt
 ```
 
 2. Making the Lab data templates ready for graph ingestion
-* Ensure that all your experiments are located in a directory form under `exps` folder. This way each experiment can be cataloged into specific directory using [FAIR data management guidelines](https://rdmkit.elixir-europe.org/data_organisation)
-* Go to the [main.py](src/main.py) file and either change the credential details to your login details or add a new user with the credentials listed and provide admin access to the database.
+* Ensure that all your experiments are located in a directory form under the `exps` folder. This way, each experiment can be cataloged into a specific directory using [FAIR data management guidelines](https://rdmkit.elixir-europe.org/data_organisation)
+* Go to the [main.py](src/main.py) file and either change the credential details to your login details or add a new user with the credentials listed and provide admin access to the Neo4J database.
 ```bash
 cd src
 python main.py
