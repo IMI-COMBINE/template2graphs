@@ -17,10 +17,21 @@ The repository is a workflow to generate a knowledge graph from a lab data templ
 ### Directory overview
 
 ```
-├── GNA-NOW Graph schema.pdf
-├── LICENSE
-├── README.md
+.
 ├── data
+│   ├── additional
+│   │   ├── assessments
+│   │   │   ├── FAIRplusDSM_GNA-NOW_post.pdf
+│   │   │   ├── FAIRplusDSM_GNA-NOW_pre.pdf
+│   │   │   └── GNA_NOW_WP1_DataSurvey_template.xlsx
+│   │   └── templates
+│   │       ├── AMR_DataDictionary_v03.xlsx
+│   │       ├── LabDataTemplate_in-vitro_post-FAIRification.xlsx
+│   │       ├── LabDataTemplate_in-vitro_pre-FAIRification.xlsx
+│   │       ├── LabDataTemplate_in-vivo_post-FAIRification.xlsx
+│   │       ├── LabDataTemplate_in-vivo_pre-FAIRification.xlsx
+│   │       ├── Project-specific_Bacterial-strain-list_v01.xlsx
+│   │       └── Project-specific_Compound-list_v01.xlsx
 │   ├── exps
 │   │   ├── dummy
 │   │   │   ├── invitro_dummy_data.xlsx
@@ -29,25 +40,28 @@ The repository is a workflow to generate a knowledge graph from a lab data templ
 │   │   │   ├── processed_invitro_data.tsv
 │   │   │   └── processed_invivo_data.tsv
 │   │   └── noso-502
-│   │   │   ├── invitro_NBT_MIC.xlsx
-│   │   │   └── invivo_EMC_DF_Ec.xlsx
-│   │   │   └── invivo_EMC_DF_Kp.xlsx
-│   │   │   └── invivo_EMC_PK_Ec.xlsx
-│   │   │   ├── node_dict.json
-│   │   │   ├── processed_invitro_data.tsv
-│   │   │   └── processed_invivo_data.tsv
-│   ├── mapping_files
-│   │   ├── bacterial_strain.tsv
-│   │   ├── biomaterials.tsv
-│   │   ├── experimental_type.tsv
-│   │   ├── gna_ontology.tsv
-│   │   ├── medium.tsv
-│   │   ├── result_unit.tsv
-│   │   ├── roa.tsv
-│   │   ├── sex.tsv
-│   │   ├── species.tsv
-│   │   ├── statistical_method.tsv
-│   │   └── study_type.tsv
+│   │       ├── invitro_NBT_MIC.xlsx
+│   │       ├── invivo_EMC_DF_Ec.xlsx
+│   │       ├── invivo_EMC_DF_Kp.xlsx
+│   │       ├── invivo_EMC_PK_Ec.xlsx
+│   │       ├── node_dict.json
+│   │       ├── processed_invitro_data.tsv
+│   │       └── processed_invivo_data.tsv
+│   └── mapping_files
+│       ├── bacterial_strain.tsv
+│       ├── biomaterials.tsv
+│       ├── experimental_type.tsv
+│       ├── gna_ontology.tsv
+│       ├── medium.tsv
+│       ├── result_unit.tsv
+│       ├── roa.tsv
+│       ├── sex.tsv
+│       ├── species.tsv
+│       ├── statistical_method.tsv
+│       └── study_type.tsv
+├── GNA-NOW Graph schema.pdf
+├── LICENSE
+├── README.md
 ├── requirements.txt
 └── src
     ├── constants.py
@@ -59,6 +73,7 @@ The repository is a workflow to generate a knowledge graph from a lab data templ
 
 * The [exps directory](data/exps/) consists of a list of experiment directories with pre-filled templates for *in vitro* and *in vivo* studies. Here, we show examples of "dummy" datasets and a NOSO-502 (internal project data).
 * The [mapping directory](data/mapping_files/) consists of ontology mapped terms of the template. This is catered towards the experiments developed and performed in the project and can be easily adapted for other use cases using the ontology service [OLS](https://www.ebi.ac.uk/ols4).
+* The [additional directory](data/additional/) consists of all the pre-work done on the templates and the FAIR assessment results. This showcases the effort done before and after FAIRification.
 * The [src directory](src/) consists of all the Python scripts required to transform the lab data template into knowledge graphs.
 
 ### Prerequisite
@@ -78,7 +93,7 @@ pip install -r requirements.txt
 
 2. Making the Lab data templates ready for graph ingestion
 * Ensure that all your experiments are located in a directory form under the `exps` folder. This way, each experiment can be cataloged into a specific directory using [FAIR data management guidelines](https://rdmkit.elixir-europe.org/data_organisation)
-* Go to the [main.py](src/main.py) file and either change the credential details to your login details or add a new user with the credentials listed and provide admin access to the Neo4J database.
+* Go to the [main.py](src/main.py) file and either change the credential details to your login details or add a new user with the credentials listed (admin_name = "template2graph", password = "gnanow2024-database") and provide admin access to the Neo4J database.
 ```bash
 cd src
 python main.py
